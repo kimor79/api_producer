@@ -64,7 +64,6 @@ class ApiProducer {
 		'csv' => 'text/csv',
 		'json' => 'application/json',
 		'list' => 'text/plain',
-		'print_r' => NULL,
 	);
 
 	protected $output_formats = array(
@@ -178,9 +177,10 @@ class ApiProducer {
 	 * @param array $optional Optional keys
 	 * @param bool $needed false to skip check for extraneous keys
 	 * @return array list of errors or an empty array
+	 */
 	public function validateInput($input = array(), $required = array(), $optional = array(), $needed = false) {
 		$errors = array();
-		$tests = array();
+		$keys = array();
 
 		foreach($required as $key => $func) {
 			if(!array_key_exists($key, $input)) {
@@ -188,9 +188,24 @@ class ApiProducer {
 				continue;
 			}
 
-			$tests[$key] = $func;
+			$keys[$key] = $func;
 		}
 
+		foreach($optional as $key => $func) {
+			if(array_key_exists($key, $input)) {
+				$keys[$key] = $func;
+			}
+		}
+
+		if($needed) {
+			$extra = array_diff_key($input, $required, $optional);
+
+			foreach($extra as $key) {
+				$errors[] = 'Extraneous ' . $key;
+			}
+		}
+
+		foreach($keys as $key => $func) {
 			$tests = array();
 
 			if(is_array($input[$key])) {
@@ -217,6 +232,8 @@ class ApiProducer {
 				}
 			}
 		}
+
+		return $errors;
 	}
 }
 
