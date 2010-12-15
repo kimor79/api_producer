@@ -1,1 +1,26 @@
 Server-side functions for producing API output, mainly for YUI consumers (eg datatable)
+
+Basic flow:
+
+$required = array(
+	'key1' => 'digit',
+	'key2' => NULL,
+);
+
+$optional = array(
+	'key3' => 'bool',
+);
+
+$api->setParameters();
+$input = $api->setInput($_POST);
+$errors = $api->validateInput($input, $required, $optional);
+
+if(!empty($errors)) {
+	$api->formatOutput(array(), '400', implode("\n", $errors));
+	exit(0);
+}
+
+...
+// populate $records
+
+$api->formatOutput($records);
