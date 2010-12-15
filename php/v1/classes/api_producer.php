@@ -214,6 +214,19 @@ class ApiProducer {
 	}
 
 	/**
+	 * Sanitize sortField value
+	 * @param string $value
+	 * @return string
+	 */
+	protected function sanitizeParameter_sortField($value) {
+		if(is_null($value) || is_scalar($value)) {
+			return $value;
+		}
+
+		return $this->api_parameters['sortField'];
+	}
+
+	/**
 	 * Sanitize subDetails value
 	 * @param string $value
 	 * @return bool
