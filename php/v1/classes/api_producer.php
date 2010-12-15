@@ -44,9 +44,9 @@ class ApiProducer {
 		'contentType' => true,
 		'csvHeader' => true,
 		'flatOutput' => false,
+		'numResults' => 0,
 		'outputFields' => array(),
 		'outputFormat' => 'json',
-		'numResults' => 0,
 		'sortDir' => 'desc',
 		'sortField' => NULL,
 		'subDetails' => false,
@@ -72,6 +72,8 @@ class ApiProducer {
 		'list',
 		'print_r',
 	);
+
+	protected $parameters = array();
 
 	protected $requires_flat_output = array(
 		'csv',
@@ -114,6 +116,123 @@ class ApiProducer {
 		}
 
 		return NULL;
+	}
+
+	/**
+	 * Sanitize csvHeader value
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function sanitizeParameter_csvHeader($value) {
+		return $this->trueFalse($value, $this->api_parameters['csvHeader']);
+	}
+
+	/**
+	 * Sanitize flatOutput value
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function sanitizeParameter_flatOutput($value) {
+		return $this->trueFalse($value, $this->api_parameters['flatOutput']);
+	}
+
+	/**
+	 * Sanitize numResults value
+	 * @param string $value
+	 * @return int
+	 */
+	protected function sanitizeParameter_numResults($value) {
+		if(ctype_digit((string) $value)) {
+			return (int) $value;
+		}
+
+		return $this->api_parameters['numResults'];
+	}
+
+	/**
+	 * Sanitize outputFields value
+	 * @param mixed $value
+	 * @return array
+	 */
+	protected function sanitizeParameter_outputFields($value) {
+		$fields = array();
+		$keys = array();
+
+		if(is_array($value)) {
+			$keys = $value;
+		} else {
+			$keys = explode(',', $value);
+		}
+
+		foreach($keys as $key) {
+			if($key == '') {
+				continue;
+			}
+
+			if(substr($key, 0, 1) == '!') {
+				$fields[$key] = false;
+			} else {
+				$fields[$key] = true;
+			}
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Sanitize outputFormat value
+	 * @param string $value
+	 * @return string
+	 */
+	protected function sanitizeParameter_outputFormat($value) {
+		$t_value = strtolower((string) $value);
+		if(in_array($t_value, $this->output_formats)) {
+			return $t_value;
+		}
+
+		return $this->api_parameters['outputFormat'];
+	}
+
+	/**
+	 * Sanitize sortDir value
+	 * @param string $value
+	 * @return string
+	 */
+	protected function sanitizeParameter_sortDir($value) {
+		switch(strtolower((string) $value)) {
+			case 'asc':
+			case 'ascending':
+				return 'asc';
+				break;
+			case 'desc':
+			case 'descending':
+				return 'desc';
+				break;
+		}
+
+		return $this->api_parameters['sortDir'];
+	}
+
+	/**
+	 * Sanitize subDetails value
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function sanitizeParameter_subDetails($value) {
+		return $this->trueFalse($value, $this->api_parameters['subDetails']);
+	}
+
+	/**
+	 * Sanitize startIndex value
+	 * @param string $value
+	 * @return int
+	 */
+	protected function sanitizeParameter_startIndex($value) {
+		if(ctype_digit((string) $value)) {
+			return (int) $value;
+		}
+
+		return $this->api_parameters['startIndex'];
 	}
 
 	/**
@@ -168,6 +287,33 @@ class ApiProducer {
 				$this->parameters['flatOutput'] = true;
 			}
 		}
+	}
+
+	/**
+	 * Checks whether input is "true" (yes, 1, on) or "false" (no, 0, off)
+	 * @param string $input
+	 * @param bool $default What to return if input is neither true/false
+	 * @return bool
+	 */
+	public function trueFalse($input, $default) {
+		switch(strtolower((string) $input)) {
+			case '1':
+			case 'on':
+			case 'true':
+			case 'yes':
+				return true;
+			case '0':
+			case 'false':
+			case 'no':
+			case 'off':
+				return false;
+		}
+
+		if(is_bool($default)) {
+			return $default;
+		}
+
+		return false;
 	}
 
 	/**
