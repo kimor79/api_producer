@@ -378,6 +378,10 @@ class ApiProducer {
 				$tests[] = $input[$key];
 			}
 
+			if(is_null($func)) {
+				continue;
+			}
+
 			$function = 'validateInput_' . $func;
 			if(!method_exists($this, $function)) {
 				$errors[] = 'Unable to validate ' . $key;
@@ -393,6 +397,40 @@ class ApiProducer {
 		}
 
 		return $errors;
+	}
+
+	/**
+	 * Validate input is "bool"-like
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function validateInput_bool($input) {
+		switch(strtolower((string) $input)) {
+			case '0':
+			case '1':
+			case 'false':
+			case 'no':
+			case 'off':
+			case 'on':
+			case 'true':
+			case 'yes':
+				return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate input is a digit
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function validateInput_digit($input) {
+		if(ctype_digit((string) $input)) {
+			return true;
+		}
+
+		return false;
 	}
 }
 
