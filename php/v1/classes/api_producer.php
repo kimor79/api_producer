@@ -377,6 +377,24 @@ class ApiProducer {
 	}
 
 	/**
+	 * Show list output
+	 * @param array $data
+	 */
+	protected function showOutput_list($data) {
+		$output = array();
+
+		foreach($data['records'] as $record) {
+			if(is_array($record)) {
+				$output[] = $record[$this->outputFormat_list_key];
+			} else {
+				$output[] = $record;
+			}
+		}
+
+		echo implode("\n", $output);
+	}
+
+	/**
 	 * Show print_r output
 	 * @param array $data
 	 */
