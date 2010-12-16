@@ -106,46 +106,6 @@ class ApiProducer {
 	}
 
 	/**
-	 * show error (based on outputFormat)
-	 * @param int error code
-	 * @param string error message
-	 */
-	public function showError($status = 400, $message = 'Unknown') {
-		$function = showError_ . $this->getParameter('outputFormat');
-
-		if(method_exists($this, $function)) {
-			$details = array(
-				'message' => $message,
-				'status' => $status,
-			);
-
-			$this->$function($details);
-			return;
-		}
-
-		// Fallback
-		echo $status . ' ' . $message;
-	}
-
-	/**
-	 * show json error
-	 * @param array $data
-	 */
-	protected function showError_json($data) {
-		echo json_encode($data);
-	}
-
-	/**
-	 * show print_r error
-	 * @param array $data
-	 */
-	protected function showError_print_r($data) {
-		echo '<pre>';
-		print_r($data);
-		echo '</pre>';
-	}
-
-	/**
 	 * Get the value for given parameter
 	 * @param string $parameter
 	 * @return mixed
@@ -340,6 +300,46 @@ class ApiProducer {
 				$this->parameters['flatOutput'] = true;
 			}
 		}
+	}
+
+	/**
+	 * show error (based on outputFormat)
+	 * @param int error code
+	 * @param string error message
+	 */
+	public function showError($status = 400, $message = 'Unknown') {
+		$function = showError_ . $this->getParameter('outputFormat');
+
+		if(method_exists($this, $function)) {
+			$details = array(
+				'message' => $message,
+				'status' => $status,
+			);
+
+			$this->$function($details);
+			return;
+		}
+
+		// Fallback
+		echo $status . ' ' . $message;
+	}
+
+	/**
+	 * show json error
+	 * @param array $data
+	 */
+	protected function showError_json($data) {
+		echo json_encode($data);
+	}
+
+	/**
+	 * show print_r error
+	 * @param array $data
+	 */
+	protected function showError_print_r($data) {
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
 	}
 
 	/**
