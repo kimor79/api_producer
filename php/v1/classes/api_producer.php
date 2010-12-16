@@ -31,7 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
  * ApiProducer
- * @author Kimo Rosenbaum <kimo@bitgravity.com>
+ * @author Kimo Rosenbaum <kimor79@yahoo.com>
  * @version $Id$
  * @package ApiProducer
  */
