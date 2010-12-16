@@ -369,6 +369,44 @@ class ApiProducer {
 	}
 
 	/**
+	 * Show csv output
+	 * @param array $data
+	 */
+	protected function showOutput_csv($data) {
+		$keys = array_keys($data['records']);
+		$values = $data['records'];
+
+		$t_keys = $keys;
+		foreach($t_keys as $key) {
+			if(is_int($key)) {
+				$keys = array_keys($data['records'][0]);
+			} else {
+				$values = array_values($data['records']);
+			}
+
+			break;
+		}
+
+		$fp = fopen('php://temp', 'r+');
+
+		if($this->getParameter('csvHeader')) {
+			fputcsv($fp, $keys, ',', '"');
+		}
+
+		foreach($values as $value) {
+			fputcsv($fp, $value, ',', '"');
+		}
+
+		$output = '';
+		rewind($fp);
+		$stat = fstat($fp);
+		$output = fread($fp, $stat['size']);
+		fclose($fp);
+
+		echo $output;
+	}
+
+	/**
 	 * Show json output
 	 * @param array $data
 	 */
