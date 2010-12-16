@@ -16,11 +16,11 @@ $input = $api->setInput($_POST);
 $errors = $api->validateInput($input, $required, $optional);
 
 if(!empty($errors)) {
-	$api->formatOutput(array(), '400', implode("\n", $errors));
+	$api->showError('400', implode("\n", $errors));
 	exit(0);
 }
 
 ...
 // populate $records
 
-$api->formatOutput($records);
+$api->showOutput($records, $total_records);
