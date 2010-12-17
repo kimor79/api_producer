@@ -249,6 +249,35 @@ class ApiProducer {
 	}
 
 	/**
+	 * Send headers (as needed)
+	 * @param $string filename (if Content-Disposition is to be sent)
+	 */
+	public function sendHeaders($filename = NULL) {
+		if($this->getParameter('contentType') === false) {
+			return;
+		}
+
+		$format = $this->getParameter('outputFormat');
+
+		if(array_key_exists($format, $this->content_types)) {
+			if(!is_null($this->content_types[$format])) {
+				header('Content-Type: ' . $this->content_types[$format]);
+			}
+		}
+
+		if(array_key_exists($format, $this->content_disposition)) {
+			if(!is_null($this->content_disposition[$format])) {
+				if(is_null($filename)) {
+					$filename = substr(strrchr($_SERVER['PHP_SELF'], '/'), 1) . time();
+				}
+
+				header("Content-Disposition: attachment; filename=\"%s.%s\"",
+					$filename, $this->content_disposition[$format]);
+			}
+		}
+	}
+
+	/**
 	 * Remove API parameters from input
 	 * @param array $input
 	 * @return array

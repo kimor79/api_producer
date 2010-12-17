@@ -23,4 +23,5 @@ if(!empty($errors)) {
 ...
 // populate $records
 
+$api->sendHeaders();
 $api->showOutput($records, $total_records);
