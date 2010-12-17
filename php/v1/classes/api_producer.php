@@ -397,13 +397,13 @@ class ApiProducer {
 			fputcsv($fp, $value, ',', '"');
 		}
 
-		$output = '';
 		rewind($fp);
-		$stat = fstat($fp);
-		$output = fread($fp, $stat['size']);
-		fclose($fp);
 
-		echo $output;
+		$stat = fstat($fp);
+		header('Content-Length: ' . $stat['size']);
+
+		fpassthru($fp);
+		fclose($fp);
 	}
 
 	/**
