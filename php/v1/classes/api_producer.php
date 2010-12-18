@@ -97,7 +97,7 @@ class ApiProducer {
 	 * @param string output format
 	 * @param string content-type header (or NULL)
 	 */
-	public function contentTypes($format, $header) {
+	public function contentType($format, $header) {
 		if(in_array($format, $this->output_formats)) {
 			if(is_null($header) || is_scalar($header)) {
 				$this->content_types[$format] = $header;
