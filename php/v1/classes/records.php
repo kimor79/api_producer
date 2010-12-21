@@ -43,7 +43,7 @@ class ApiProducerRecords extends ApiProducerBase {
 	protected $allow_input_arrays = false;
 
 	public function __construct() {
-		parent::_construct();
+		parent::__construct();
 
 		$this->api_parameters = array_merge(
 			$this->api_parameters, array(

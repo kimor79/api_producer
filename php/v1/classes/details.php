@@ -41,7 +41,7 @@ include('base.php');
 class ApiProducerDetails extends ApiProducerBase {
 
 	public function __construct() {
-		parent::_construct();
+		parent::__construct();
 	}
 
 	/**
