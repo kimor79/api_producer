@@ -36,6 +36,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @package ApiProducerRecords
  */
 
+include('./base.php');
+
 class ApiProducerRecords extends ApiProducerBase {
 
 	protected $allow_input_arrays = false;
@@ -177,15 +179,18 @@ class ApiProducerRecords extends ApiProducerBase {
 	 * Show output
 	 * @param array $records
 	 * @param int $total
+	 * @param int $status Optional
+	 * @param string $message Optional
 	 */
-	public function showOutput($records = array(), $total = 0) {
+	public function showOutput($records = array(), $total = 0, $status = 200, $message = '') {
 		$sort = $this->getSortField($records);
 		$output = array(
+			'message' => $message,
 			'records' => $records,
 			'recordsReturned' => count($records),
 			'sortDir' => $this->getParameter('sortDir'),
 			'startIndex' => $this->getParameter('startIndex'),
-			'status' => 200,
+			'status' => $status,
 			'totalRecords' => $total,
 		);
 

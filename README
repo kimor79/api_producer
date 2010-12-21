@@ -16,7 +16,7 @@ $input = $api->setInput($_POST);
 $errors = $api->validateInput($input, $required, $optional);
 
 if(!empty($errors)) {
-	$api->showError('400', implode("\n", $errors));
+	$api->showOutput(array(), 0, '400', implode("\n", $errors));
 	exit(0);
 }
 
