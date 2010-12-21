@@ -36,7 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * @package ApiProducerRecords
  */
 
-include('./base.php');
+include('base.php');
 
 class ApiProducerRecords extends ApiProducerBase {
 
