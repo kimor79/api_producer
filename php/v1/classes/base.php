@@ -63,6 +63,9 @@ class ApiProducerBase {
 
 	protected $requires_flat_output = array();
 
+	public function __construct() {
+	}
+
 	/**
 	 * Add/modify content-disposition header for given output format
 	 * @param string output format
