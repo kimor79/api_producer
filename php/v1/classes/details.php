@@ -50,7 +50,7 @@ class ApiProducerDetails extends ApiProducerBase {
 	 * @param string $message
 	 * @param mixed $details
 	 */
-	public function showOutput($status = '200', $message = '', $details = array()) {
+	public function showOutput($status = 200, $message = '', $details = array()) {
 		$output = array(
 			'details' => $details,
 			'message' => $message,
