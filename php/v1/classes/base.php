@@ -54,7 +54,7 @@ class ApiProducerBase {
 		'json' => 'application/json',
 	);
 
-	protected $multi_separator = ',';
+	public $multi_separator = ',';
 
 	protected $output_formats = array(
 		'json',
