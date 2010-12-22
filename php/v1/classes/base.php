@@ -54,6 +54,8 @@ class ApiProducerBase {
 		'json' => 'application/json',
 	);
 
+	protected $multi_separator = ',';
+
 	protected $output_formats = array(
 		'json',
 		'print_r',
@@ -310,20 +312,30 @@ class ApiProducerBase {
 		}
 
 		foreach($keys as $key => $func) {
+			$multi = false;
 			$tests = array();
 
+			if(substr($func, 0, 7) === '_multi_') {
+				$func = substr($func, 7);
+				$multi = true;				
+			}
+
 			if(is_array($input[$key])) {
-				if(!$this->allow_input_arrays) {
+				if(!$multi) {
 					$errors[] = 'Multiple ' . $key . ' not allowed';
 					continue;
 				}
 
 				$tests = $input[$key];
 			} else {
-				$tests[] = $input[$key];
+				if($multi) {
+					$tests = explode($this->multi_separator, $input[$key]);
+				} else {
+					$tests[] = $input[$key];
+				}
 			}
 
-			if(is_null($func)) {
+			if(empty($func)) {
 				continue;
 			}
 
