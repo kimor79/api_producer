@@ -346,7 +346,7 @@ class ApiProducerBase {
 			}
 
 			foreach($tests as $test) {
-				if($this->$function($input[$key]) !== true) {
+				if($this->$function($test) !== true) {
 					$errors[] = 'Invalid ' . $key;
 					continue;
 				}
