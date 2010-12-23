@@ -108,6 +108,19 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Do the get_magic_quotes_gpc()/stripslashes dance
+	 * @param string $input
+	 * @return string
+	 */
+	public function gpcSlash($input) {
+		if(get_magic_quotes_gpc()) {
+			return stripslashes($input);
+		}
+
+		return $input;
+	}
+
+	/**
 	 * Sanitize contentType value
 	 * @param string $value
 	 * @return bool
