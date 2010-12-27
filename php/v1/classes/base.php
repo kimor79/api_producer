@@ -137,7 +137,7 @@ class ApiProducerBase {
 
 			if(substr($func, 0, 7) === '_multi_') {
 				$func = substr($func, 7);
-				$multi = true;				
+				$multi = true;
 			}
 
 			if(empty($func)) {
@@ -387,7 +387,7 @@ class ApiProducerBase {
 
 			if(substr($func, 0, 7) === '_multi_') {
 				$func = substr($func, 7);
-				$multi = true;				
+				$multi = true;
 			}
 
 			if(is_array($input[$key])) {
