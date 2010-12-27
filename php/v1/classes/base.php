@@ -121,6 +121,63 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Sanitize input
+	 * @param array $input
+	 * @param array $sanitize
+	 * @return array
+	 */
+	public function sanitizeInput($input = array(), $sanitize = array()) {
+		$output = $input;
+
+		$keys = array_intersect_key($sanitize, $input);
+
+		foreach($keys as $key => $func) {
+			$multi = false;
+			$tests = array();
+
+			if(substr($func, 0, 7) === '_multi_') {
+				$func = substr($func, 7);
+				$multi = true;				
+			}
+
+			if(empty($func)) {
+				continue;
+			}
+
+			$function = 'sanitizeInput_' . $func;
+			if(!method_exists($this, $function)) {
+				continue;
+			}
+
+			if(is_array($input[$key])) {
+				$tests = $input[$key];
+			} else {
+				if($multi) {
+					$tests = explode($this->multi_separator, $input[$key]);
+				} else {
+					$tests[] = $input[$key];
+				}
+			}
+
+			foreach($tests as $test) {
+				$value = $this->$function($input[$key]);
+
+				if($multi) {
+					if(!is_array($output[$key])) {
+						$output[$key] = array();
+					}
+
+					$output[$key][] = $value;
+				} else {
+					$output[$key] = $value;
+				}
+			}
+		}
+
+		return $output;
+	}
+
+	/**
 	 * Sanitize contentType value
 	 * @param string $value
 	 * @return bool

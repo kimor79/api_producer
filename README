@@ -11,6 +11,10 @@ $optional = array(
 	'key3' => 'bool',
 );
 
+$sanitize = array(
+	'key2' => 'convertcase',
+);
+
 $api->setParameters();
 $input = $api->setInput($_POST);
 $errors = $api->validateInput($input, $required, $optional);
@@ -19,6 +23,8 @@ if(!empty($errors)) {
 	$api->showOutput(array(), 0, '400', implode("\n", $errors));
 	exit(0);
 }
+
+$input = $api->sanitizeInput($input);
 
 ...
 // populate $records
