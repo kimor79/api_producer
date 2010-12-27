@@ -140,15 +140,6 @@ class ApiProducerBase {
 				$multi = true;
 			}
 
-			if(empty($func)) {
-				continue;
-			}
-
-			$function = 'sanitizeInput_' . $func;
-			if(!method_exists($this, $function)) {
-				continue;
-			}
-
 			if(is_array($input[$key])) {
 				$tests = $input[$key];
 			} else {
@@ -160,7 +151,16 @@ class ApiProducerBase {
 			}
 
 			foreach($tests as $test) {
-				$value = $this->$function($input[$key]);
+				if(empty($func)) {
+					$value = $test;
+				} else {
+					$function = 'sanitizeInput_' . $func;
+					if(!method_exists($this, $function)) {
+						continue;
+					}
+
+					$value = $this->$function($test);
+				}
 
 				if($multi) {
 					if(!is_array($output[$key])) {
