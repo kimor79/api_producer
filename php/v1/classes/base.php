@@ -269,7 +269,7 @@ class ApiProducerBase {
 	 * @param array $input array containing input to look for parameters [default = $_GET]
 	 * @param array $defaults Override default values
 	 */
-	public function setParameters($input = false, $defaults) {
+	public function setParameters($input = false, $defaults = array()) {
 		$array = $_GET;
 
 		if(is_array($input)) {
