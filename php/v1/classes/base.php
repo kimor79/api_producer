@@ -250,8 +250,8 @@ class ApiProducerBase {
 					$filename = substr(strrchr($_SERVER['PHP_SELF'], '/'), 1) . time();
 				}
 
-				header("Content-Disposition: attachment; filename=\"%s.%s\"",
-					$filename, $this->content_disposition[$format]);
+				header(sprintf("Content-Disposition: attachment; filename=\"%s.%s\"",
+					$filename, $this->content_disposition[$format]));
 			}
 		}
 	}
