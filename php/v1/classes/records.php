@@ -183,15 +183,16 @@ class ApiProducerRecords extends ApiProducerBase {
 	 * @param string $message Optional
 	 */
 	public function showOutput($records = array(), $total = 0, $status = 200, $message = '') {
-		$sort = $this->getSortField($records);
+		$count = count($records);
+
 		$output = array(
 			'message' => $message,
 			'records' => $records,
-			'recordsReturned' => count($records),
+			'recordsReturned' => $count,
 			'sortDir' => $this->getParameter('sortDir'),
 			'startIndex' => $this->getParameter('startIndex'),
 			'status' => $status,
-			'totalRecords' => $total,
+			'totalRecords' => ($total) ? $total : $count,
 		);
 
 		$function = 'showOutput_' . $this->getParameter('outputFormat');
