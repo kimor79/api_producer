@@ -59,7 +59,7 @@ class ApiProducerRecords extends ApiProducerBase {
 		$this->output_formats[] = 'csv';
 		$this->output_formats[] = 'list';
 
-		$this->requires_flat_output[] = 'csv';
+		$this->requires_flat_output['csv'] = true;
 	}
 
 	/**

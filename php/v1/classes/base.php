@@ -303,8 +303,8 @@ class ApiProducerBase {
 			}
 		}
 
-		if(in_array($this->parameters['outputFormat'], $this->requires_flat_output)) {
-			if(!is_null($this->requires_flat_output[$this->parameters['outputFormat']])) {
+		if(array_key_exists($this->parameters['outputFormat'], $this->requires_flat_output)) {
+			if(!empty($this->requires_flat_output[$this->parameters['outputFormat']])) {
 				$this->parameters['flatOutput'] = true;
 			}
 		}
