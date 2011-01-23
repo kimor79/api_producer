@@ -40,8 +40,6 @@ include('base.php');
 
 class ApiProducerRecords extends ApiProducerBase {
 
-	protected $allow_input_arrays = false;
-
 	public function __construct() {
 		parent::__construct();
 
