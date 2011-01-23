@@ -48,7 +48,7 @@ class ApiProducerRecords extends ApiProducerBase {
 			'csvHeader' => true,
 			'numResults' => 0,
 			'outputFields' => array(),
-			'sortDir' => 'desc',
+			'sortDir' => 'asc',
 			'sortField' => NULL,
 			'startIndex' => 0,
 		));
