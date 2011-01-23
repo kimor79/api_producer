@@ -178,6 +178,15 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * gpcSlash it
+	 * @param string $input
+	 * @return string
+	 */
+	protected function sanitizeInput_gpcSlash($input) {
+		return $this->gpcSlash($input);
+	}
+
+	/**
 	 * Sanitize contentType value
 	 * @param string $value
 	 * @return bool
