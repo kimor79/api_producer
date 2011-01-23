@@ -53,26 +53,13 @@ class ApiProducerRecords extends ApiProducerBase {
 			'startIndex' => 0,
 		));
 
-		$this->content_disposition = array_merge(
-			$this->content_disposition, array(
-			'csv' => 'csv',
-		));
+		$this->content_disposition['csv'] = 'csv';
+		$this->content_types['csv'] = 'text/csv';
 
-		$this->content_types = array_merge(
-			$this->content_types, array(
-			'csv' => 'text/csv',
-		));
+		$this->output_formats[] = 'csv';
+		$this->output_formats[] = 'list';
 
-		$this->output_formats = array_merge(
-			$this->output_formats, array(
-			'csv',
-			'list',
-		));
-
-		$this->requires_flat_output = array_merge(
-			$this->requires_flat_output, array(
-			'csv',
-		));
+		$this->requires_flat_output[] = 'csv';
 	}
 
 	/**
