@@ -210,28 +210,19 @@ class ApiProducerRecords extends ApiProducerBase {
 	 * @param array $data
 	 */
 	protected function showOutput_csv($data) {
-		$keys = array_keys($data['records']);
 		$values = $data['records'];
-
-		$t_keys = $keys;
-		foreach($t_keys as $key) {
-			if(is_int($key)) {
-				$keys = array_keys($data['records'][0]);
-			} else {
-				$values = array_values($data['records']);
-			}
-
-			break;
-		}
 
 		$fp = fopen('php://temp', 'r+');
 
 		if($this->getParameter('csvHeader')) {
-			fputcsv($fp, $keys, ',', '"');
+			$first = reset($data['records']);
+			if(is_array($first)) {
+				fputcsv($fp, array_keys($first), ',', '"');
+			}
 		}
 
 		foreach($values as $value) {
-			fputcsv($fp, $value, ',', '"');
+			fputcsv($fp, (array) $value, ',', '"');
 		}
 
 		rewind($fp);
