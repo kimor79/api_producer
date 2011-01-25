@@ -127,7 +127,7 @@ class ApiProducerBase {
 	 * @return array
 	 */
 	public function sanitizeInput($input = array(), $sanitize = array()) {
-		$output = $input;
+		$output = array_diff_key($input, $sanitize);
 
 		$keys = array_intersect_key($sanitize, $input);
 
@@ -262,15 +262,7 @@ class ApiProducerBase {
 	 * @return array
 	 */
 	public function setInput($input = array()) {
-		$output = array();
-
-		foreach($input as $key => $value) {
-			if(!array_key_exists($key, $this->parameters)) {
-				$output[$key] = $value;
-			}
-		}
-
-		return $output;
+		return array_diff_key($input, $this->parameters);
 	}
 
 	/**
