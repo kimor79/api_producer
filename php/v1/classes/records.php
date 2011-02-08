@@ -68,7 +68,8 @@ class ApiProducerRecords extends ApiProducerBase {
 	 * @return bool
 	 */
 	protected function sanitizeParameter_csvHeader($value) {
-		return $this->trueFalse($value, $this->api_parameters['csvHeader']);
+		return $this->trueFalse($value,
+			$this->api_parameters['csvHeader']);
 	}
 
 	/**
@@ -167,7 +168,8 @@ class ApiProducerRecords extends ApiProducerBase {
 	 * @param int $status Optional
 	 * @param string $message Optional
 	 */
-	public function showOutput($records = array(), $total = 0, $status = 200, $message = '') {
+	public function showOutput($records = array(), $total = 0,
+			$status = 200, $message = '') {
 		$count = count($records);
 
 		$output = array(
@@ -228,7 +230,8 @@ class ApiProducerRecords extends ApiProducerBase {
 
 		foreach($data['records'] as $record) {
 			if(is_array($record)) {
-				$output[] = $record[$this->outputFormat_list_key];
+				$output[] =
+					$record[$this->outputFormat_list_key];
 			} else {
 				$output[] = $record;
 			}

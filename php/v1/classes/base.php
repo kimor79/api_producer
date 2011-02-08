@@ -144,7 +144,8 @@ class ApiProducerBase {
 				$tests = $input[$key];
 			} else {
 				if($multi) {
-					$tests = explode($this->multi_separator, $input[$key]);
+					$tests = explode($this->multi_separator,
+						$input[$key]);
 				} else {
 					$tests[] = $input[$key];
 				}
@@ -192,7 +193,8 @@ class ApiProducerBase {
 	 * @return bool
 	 */
 	protected function sanitizeParameter_contentType($value) {
-		return $this->trueFalse($value, $this->api_parameters['contentType']);
+		return $this->trueFalse($value,
+			$this->api_parameters['contentType']);
 	}
 
 	/**
@@ -201,7 +203,8 @@ class ApiProducerBase {
 	 * @return bool
 	 */
 	protected function sanitizeParameter_flatOutput($value) {
-		return $this->trueFalse($value, $this->api_parameters['flatOutput']);
+		return $this->trueFalse($value,
+			$this->api_parameters['flatOutput']);
 	}
 
 	/**
@@ -224,7 +227,8 @@ class ApiProducerBase {
 	 * @return bool
 	 */
 	protected function sanitizeParameter_subDetails($value) {
-		return $this->trueFalse($value, $this->api_parameters['subDetails']);
+		return $this->trueFalse($value,
+			$this->api_parameters['subDetails']);
 	}
 
 	/**
@@ -240,18 +244,24 @@ class ApiProducerBase {
 
 		if(array_key_exists($format, $this->content_types)) {
 			if(!is_null($this->content_types[$format])) {
-				header('Content-Type: ' . $this->content_types[$format]);
+				header('Content-Type: ' .
+					$this->content_types[$format]);
 			}
 		}
 
 		if(array_key_exists($format, $this->content_disposition)) {
 			if(!is_null($this->content_disposition[$format])) {
 				if(is_null($filename)) {
-					$filename = substr(strrchr($_SERVER['PHP_SELF'], '/'), 1) . time();
+					$filename =substr(strrchr(
+						$_SERVER['PHP_SELF'], '/'),
+						1) . time();
 				}
 
-				header(sprintf("Content-Disposition: attachment; filename=\"%s.%s\"",
-					$filename, $this->content_disposition[$format]));
+				$dispo = 'Content-Disposition: attachment;';
+				$dispo .= sprintf(" filename=\"%s.%s\"",
+					$filename,
+					$this->content_disposition[$format]);
+				header($dispo);
 			}
 		}
 	}
@@ -267,7 +277,8 @@ class ApiProducerBase {
 
 	/**
 	 * Set the API parameters from request (eg $_GET, $_POST)
-	 * @param array $input array containing input to look for parameters [default = $_GET]
+	 * @param array $input array containing input to look for parameters
+	 *	[default = $_GET]
 	 * @param array $defaults Override default values
 	 */
 	public function setParameters($input = false, $defaults = array()) {
@@ -289,13 +300,15 @@ class ApiProducerBase {
 
 			$function = 'sanitizeParameter_' . $param;
 			if(method_exists($this, $function)) {
-				$this->parameters[$param] = $this->$function($value);
+				$this->parameters[$param] =
+					$this->$function($value);
 			} else {
 				$this->parameters[$param] = $value;
 			}
 		}
 
-		if(array_key_exists($this->parameters['outputFormat'], $this->requires_flat_output)) {
+		if(array_key_exists($this->parameters['outputFormat'],
+				$this->requires_flat_output)) {
 			if(!empty($this->requires_flat_output[$this->parameters['outputFormat']])) {
 				$this->parameters['flatOutput'] = true;
 			}
@@ -355,7 +368,8 @@ class ApiProducerBase {
 	 * @param bool $needed false to skip check for extraneous keys
 	 * @return array list of errors or an empty array
 	 */
-	public function validateInput($input = array(), $required = array(), $optional = array(), $needed = false) {
+	public function validateInput($input = array(), $required = array(),
+			$optional = array(), $needed = false) {
 		$errors = array();
 		$keys = array();
 
@@ -393,14 +407,17 @@ class ApiProducerBase {
 
 			if(is_array($input[$key])) {
 				if(!$multi) {
-					$errors[] = 'Multiple ' . $key . ' not allowed';
+					$errors[] = sprintf(
+						"Multiple %s not allowed",
+						$key);
 					continue;
 				}
 
 				$tests = $input[$key];
 			} else {
 				if($multi) {
-					$tests = explode($this->multi_separator, $input[$key]);
+					$tests = explode($this->multi_separator,
+						$input[$key]);
 				} else {
 					$tests[] = $input[$key];
 				}

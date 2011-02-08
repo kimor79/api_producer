@@ -1,4 +1,5 @@
-Server-side functions for producing API output, mainly for YUI consumers (eg datatable)
+Server-side functions for producing API output,
+mainly for YUI consumers (eg datatable)
 
 Basic flow:
 
