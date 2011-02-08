@@ -45,6 +45,11 @@ class ApiProducerBase {
 		'subDetails' => false,
 	);
 
+	protected $config = array(
+		'flat_outputs' => array(),
+		'multi_separator' => ',',
+	);
+
 	// Add content-disposition header
 	// Value is file extension
 	// Set to NULL to skip header
@@ -54,16 +59,12 @@ class ApiProducerBase {
 		'json' => 'application/json',
 	);
 
-	public $multi_separator = ',';
-
 	protected $output_formats = array(
 		'json',
 		'print_r',
 	);
 
 	protected $parameters = array();
-
-	protected $requires_flat_output = array();
 
 	public function __construct() {
 	}
@@ -92,6 +93,19 @@ class ApiProducerBase {
 				$this->content_types[$format] = $header;
 			}
 		}
+	}
+
+	/**
+	 * Get the value for given config item
+	 * @param string $item
+	 * @return mixed
+	 */
+	public function getConfig($item) {
+		if(array_key_exists($item, $this->config)) {
+			return $this->config[$item];
+		}
+
+		return NULL;
 	}
 
 	/**
@@ -144,8 +158,9 @@ class ApiProducerBase {
 				$tests = $input[$key];
 			} else {
 				if($multi) {
-					$tests = explode($this->multi_separator,
-						$input[$key]);
+					$sep = $this->getConfig(
+						'multi_separator');
+					$tests = explode($sep, $input[$key]);
 				} else {
 					$tests[] = $input[$key];
 				}
@@ -267,6 +282,17 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Set a config item
+	 * @param string $item
+	 * @param mixed $value
+	 */
+	public function setConfig($item, $value) {
+		if(array_key_exists($item, $this->config)) {
+			$this->config[$item] = $value;
+		}
+	}
+
+	/**
 	 * Remove API parameters from input
 	 * @param array $input
 	 * @return array
@@ -307,11 +333,9 @@ class ApiProducerBase {
 			}
 		}
 
-		if(array_key_exists($this->parameters['outputFormat'],
-				$this->requires_flat_output)) {
-			if(!empty($this->requires_flat_output[$this->parameters['outputFormat']])) {
-				$this->parameters['flatOutput'] = true;
-			}
+		$flat_outputs = $this->getConfig('flat_outputs');
+		if(!empty($flat_outputs[$this->parameters['outputFormat']])) {
+			$this->parameters['flatOutput'] = true;
 		}
 	}
 
@@ -416,8 +440,9 @@ class ApiProducerBase {
 				$tests = $input[$key];
 			} else {
 				if($multi) {
-					$tests = explode($this->multi_separator,
-						$input[$key]);
+					$sep = $this->getConfig(
+						'multi_separator');
+					$tests = explode($sep, $input[$key]);
 				} else {
 					$tests[] = $input[$key];
 				}
