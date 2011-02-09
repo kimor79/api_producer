@@ -53,14 +53,14 @@ class ApiProducerRecords extends ApiProducerBase {
 			'startIndex' => 0,
 		));
 
-		$this->config['flat_output']['csv'] = true;
-		$this->config['list_key'] = '';
-
 		$this->content_disposition['csv'] = 'csv';
 		$this->content_types['csv'] = 'text/csv';
 
 		$this->output_formats[] = 'csv';
 		$this->output_formats[] = 'list';
+
+		$this->variables['flat_output']['csv'] = true;
+		$this->variables['list_key'] = '';
 	}
 
 	/**
@@ -227,7 +227,7 @@ class ApiProducerRecords extends ApiProducerBase {
 	 * @param array $data
 	 */
 	protected function showOutput_list($data) {
-		$l_key = $this->getConfig('list_key');
+		$l_key = $this->getVariable('list_key');
 		$output = array();
 
 		foreach($data['records'] as $record) {

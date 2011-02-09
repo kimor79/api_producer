@@ -45,11 +45,6 @@ class ApiProducerBase {
 		'subDetails' => false,
 	);
 
-	protected $config = array(
-		'flat_outputs' => array(),
-		'multi_separator' => ',',
-	);
-
 	// Add content-disposition header
 	// Value is file extension
 	// Set to NULL to skip header
@@ -65,6 +60,11 @@ class ApiProducerBase {
 	);
 
 	protected $parameters = array();
+
+	protected $variables = array(
+		'flat_outputs' => array(),
+		'multi_separator' => ',',
+	);
 
 	public function __construct() {
 	}
@@ -96,13 +96,13 @@ class ApiProducerBase {
 	}
 
 	/**
-	 * Get the value for given config item
+	 * Get the value for given variable item
 	 * @param string $item
 	 * @return mixed
 	 */
-	public function getConfig($item) {
-		if(array_key_exists($item, $this->config)) {
-			return $this->config[$item];
+	public function getVariable($item) {
+		if(array_key_exists($item, $this->variables)) {
+			return $this->variables[$item];
 		}
 
 		return NULL;
@@ -158,7 +158,7 @@ class ApiProducerBase {
 				$tests = $input[$key];
 			} else {
 				if($multi) {
-					$sep = $this->getConfig(
+					$sep = $this->getVariable(
 						'multi_separator');
 					$tests = explode($sep, $input[$key]);
 				} else {
@@ -282,13 +282,13 @@ class ApiProducerBase {
 	}
 
 	/**
-	 * Set a config item
+	 * Set a variable item
 	 * @param string $item
 	 * @param mixed $value
 	 */
-	public function setConfig($item, $value) {
-		if(array_key_exists($item, $this->config)) {
-			$this->config[$item] = $value;
+	public function setVariable($item, $value) {
+		if(array_key_exists($item, $this->variables)) {
+			$this->variables[$item] = $value;
 		}
 	}
 
@@ -333,7 +333,7 @@ class ApiProducerBase {
 			}
 		}
 
-		$flat_outputs = $this->getConfig('flat_outputs');
+		$flat_outputs = $this->getVariable('flat_outputs');
 		if(!empty($flat_outputs[$this->parameters['outputFormat']])) {
 			$this->parameters['flatOutput'] = true;
 		}
@@ -440,7 +440,7 @@ class ApiProducerBase {
 				$tests = $input[$key];
 			} else {
 				if($multi) {
-					$sep = $this->getConfig(
+					$sep = $this->getVariable(
 						'multi_separator');
 					$tests = explode($sep, $input[$key]);
 				} else {
