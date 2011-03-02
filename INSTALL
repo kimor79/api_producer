@@ -1,4 +1,6 @@
 These are very terse instructions for installing api_producer.
 
+Requires php5.2+ with ctype and json
+
 1) Copy php/ to <somewhere in php's include path>/api_producer/, e.g.:
 	cp -R php /usr/local/include/php/api_producer
