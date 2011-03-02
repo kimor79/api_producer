@@ -1,0 +1,4 @@
+These are very terse instructions for installing api_producer.
+
+1) Copy php/ to <somewhere in php's include path>/api_producer/, e.g.:
+	cp -R php /usr/local/include/php/api_producer
