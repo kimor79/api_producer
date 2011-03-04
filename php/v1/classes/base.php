@@ -418,7 +418,7 @@ class ApiProducerBase {
 		if($needed) {
 			$extra = array_diff_key($input, $required, $optional);
 
-			foreach($extra as $key) {
+			foreach($extra as $key => $junk) {
 				$errors[] = 'Extraneous ' . $key;
 			}
 		}
