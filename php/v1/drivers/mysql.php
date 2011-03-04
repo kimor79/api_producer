@@ -65,7 +65,7 @@ class ApiProducerDriverMySQL {
 		$this->query_on_error = $this->getConfig('query_on_error',
 			false);
 
-		$this->mysql = new mysqli($host, $user, $password, $database,
+		$this->mysql = @new mysqli($host, $user, $password, $database,
 			$port, $socket);
 
 		if(mysqli_connect_errno()) {
