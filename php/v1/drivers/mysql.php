@@ -125,17 +125,20 @@ class ApiProducerDriverMySQL {
 			return false;
 		}
 
-		if(!call_user_func_array(array($st, 'bind_param'), $binds)) {
-			if($st->errno) {
-				$this->error = $st->error;
-			}
+		if(!empty($binds)) {
+			if(!call_user_func_array(array($st, 'bind_param'),
+					$binds)) {
+				if($st->errno) {
+					$this->error = $st->error;
+				}
 
-			if($this->query_on_error) {
-				$this->error .= ': ' . $query;
-			}
+				if($this->query_on_error) {
+					$this->error .= ': ' . $query;
+				}
 
-			$st->close();
-			return false;
+				$st->close();
+				return false;
+			}
 		}
 
 		if(!$st->execute()) {
