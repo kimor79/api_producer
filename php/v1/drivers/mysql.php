@@ -49,16 +49,24 @@ class ApiProducerDriverMySQL {
 		$this->config = $config;
 		$this->slave_okay = $slave_okay;
 
-		$database = $this->getConfig('database', 'database');
-		$host = $this->getConfig('host', 'localhost');
-		$password = $this->getConfig('password', '');
-		$user = $this->getConfig('user', '');
+		$database = $this->getConfig('database', '');
+		$host = $this->getConfig('host',
+			ini_get('mysqli.default_host'));
+		$password = $this->getConfig('password',
+			ini_get('mysqli.default_pw'));
+		$port = $this->getConfig('port',
+			ini_get('mysqli.default_port'));
+		$socket = $this->getConfig('socket',
+			ini_get('mysqli.default_socket'));
+		$user = $this->getConfig('user',
+			ini_get('mysqli.default_user'));
 
 		$this->prefix = $this->getConfig('prefix', '');
 		$this->query_on_error = $this->getConfig('query_on_error',
 			false);
 
-		$this->mysql = new mysqli($host, $user, $password, $database);
+		$this->mysql = new mysqli($host, $user, $password, $database,
+			$port, $socket);
 
 		if(mysqli_connect_errno()) {
 			throw new Exception(mysqli_connect_error());
