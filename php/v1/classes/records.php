@@ -182,6 +182,7 @@ class ApiProducerRecords extends ApiProducerBase {
 			'records' => $records,
 			'recordsReturned' => $count,
 			'sortDir' => $this->getParameter('sortDir'),
+			'sortField' => $this->getParameter('sortField'),
 			'startIndex' => $this->getParameter('startIndex'),
 			'status' => $status,
 			'totalRecords' => ($total) ? $total : $count,
