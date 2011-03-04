@@ -44,6 +44,10 @@ class ApiProducerDetails extends ApiProducerBase {
 		parent::__construct();
 	}
 
+	public function __deconstruct() {
+		parent::__deconstruct();
+	}
+
 	/**
 	 * Show output
 	 * @param int $status

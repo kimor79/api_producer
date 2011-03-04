@@ -69,6 +69,9 @@ class ApiProducerBase {
 	public function __construct() {
 	}
 
+	public function __deconstruct() {
+	}
+
 	/**
 	 * Add/modify content-disposition header for given output format
 	 * @param string output format

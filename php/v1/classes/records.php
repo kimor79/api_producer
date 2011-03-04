@@ -63,6 +63,10 @@ class ApiProducerRecords extends ApiProducerBase {
 		$this->variables['list_key'] = '';
 	}
 
+	public function __deconstruct() {
+		parent::__deconstruct();
+	}
+
 	/**
 	 * Sanitize csvHeader value
 	 * @param string $value
