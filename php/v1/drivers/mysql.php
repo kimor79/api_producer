@@ -85,7 +85,8 @@ class ApiProducerDriverMySQL {
 		return $this->error;
 	}
 
-	/** Get a config value
+	/**
+	 * Get a config value
 	 * @param string $key
 	 * @param string $default
 	 * @return string
