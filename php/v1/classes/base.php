@@ -382,6 +382,24 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Make a string lowercase
+	 * @param string $input
+	 * @return string
+	 */
+	protected function sanitizeInput_tolower($input) {
+		return strtolower($input);
+	}
+
+	/**
+	 * Make a string uppercase
+	 * @param string $input
+	 * @return string
+	 */
+	protected function sanitizeInput_toupper($input) {
+		return strtoupper($input);
+	}
+
+	/**
 	 * Sanitize contentType value
 	 * @param string $value
 	 * @return bool
