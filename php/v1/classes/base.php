@@ -73,6 +73,182 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Cast input
+	 * @param array $input
+	 * @param array $cast
+	 * @return array
+	 */
+	public function castInput($input = array(), $cast = array()) {
+		$output = array_diff_key($input, $cast);
+
+		$keys = array_intersect_key($cast, $input);
+
+		foreach($keys as $key => $func) {
+			$multi = false;
+			$tests = array();
+
+			if(substr($func, 0, 7) === '_multi_') {
+				$func = substr($func, 7);
+				$multi = true;
+			}
+
+			if(is_array($input[$key])) {
+				$tests = $input[$key];
+			} else {
+				if($multi) {
+					$sep = $this->getVariable(
+						'multi_separator');
+					$tests = explode($sep, $input[$key]);
+				} else {
+					$tests[] = $input[$key];
+				}
+			}
+
+			foreach($tests as $test) {
+				if(empty($func)) {
+					$value = $test;
+				} else {
+					$function = 'castInput_' . $func;
+					if(!method_exists($this, $function)) {
+						continue;
+					}
+
+					$value = $this->$function($test);
+				}
+
+				if($multi) {
+					if(!is_array($output[$key])) {
+						$output[$key] = array();
+					}
+
+					$output[$key][] = $value;
+				} else {
+					$output[$key] = $value;
+				}
+			}
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Cast to array
+	 * @param string $input
+	 * @return array
+	 */
+	protected function castInput_array($input) {
+		return (array) $input;
+	}
+
+	/**
+	 * Cast to binary
+	 * @param string $input
+	 * @return binary
+	 */
+	protected function castInput_bin($input) {
+		return $this->castInput_binary($input);
+	}
+
+	/**
+	 * Cast to binary
+	 * @param string $input
+	 * @return binary
+	 */
+	protected function castInput_binary($input) {
+		return (binary) $input;
+	}
+
+	/**
+	 * Cast to boolean
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function castInput_bool($input) {
+		return $this->castInput_boolean($input);
+	}
+
+	/**
+	 * Cast to boolean
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function castInput_boolean($input) {
+		return (boolean) $input;
+	}
+
+	/**
+	 * Cast to double
+	 * @param string $input
+	 * @return float
+	 */
+	protected function castInput_double($input) {
+		return $this->castInput_float($input);
+	}
+
+	/**
+	 * Cast to float
+	 * @param string $input
+	 * @return float
+	 */
+	protected function castInput_float($input) {
+		return (float) $input;
+	}
+
+	/**
+	 * Cast to int
+	 * @param string $input
+	 * @return int
+	 */
+	protected function castInput_int($input) {
+		return $this->castInput_integer($input);
+	}
+
+	/**
+	 * Cast to integer
+	 * @param string $input
+	 * @return int
+	 */
+	protected function castInput_integer($input) {
+		return (integer) $input;
+	}
+
+	/**
+	 * Cast to object
+	 * @param string $input
+	 * @return object
+	 */
+	protected function castInput_object($input) {
+		return (object) $input;
+	}
+
+	/**
+	 * Cast to real
+	 * @param string $input
+	 * @return float
+	 */
+	protected function castInput_real($input) {
+		return $this->castInput_float($input);
+	}
+
+	/**
+	 * Cast to string
+	 * @param string $input
+	 * @return string
+	 */
+	protected function castInput_string($input) {
+		return (string) $input;
+	}
+
+	/**
+	 * Cast to unset
+	 * @param string $input
+	 * @return null
+	 */
+	protected function castInput_null($input) {
+		return (unset) $input;
+	}
+
+	/**
 	 * Add/modify content-disposition header for given output format
 	 * @param string output format
 	 * @param string file extension header (or NULL)
