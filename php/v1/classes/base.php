@@ -314,6 +314,24 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Recursively do the get_magic_quotes_gpc/stripslashes dance
+	 * @param array $input
+	 * @return array
+	 */
+	public function gpcSlashInput($input = array()) {
+		$output = array();
+		while(list($key, $value) = each($input)) {
+			if(is_array($value)) {
+				$output[$key] = $this->gpcSlashInput($value);
+			} else {
+				$output[$key] = $this->gpcSlash($value);
+			}
+		}
+
+		return $output;
+	}
+
+	/**
 	 * Sanitize input
 	 * @param array $input
 	 * @param array $sanitize
