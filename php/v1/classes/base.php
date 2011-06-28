@@ -391,6 +391,18 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Sanitize a fqdn
+	 * @param string $input
+	 * @return string
+	 */
+	protected function sanitizeInput_fqdn($input) {
+		$input = $this->sanitizeInput_tolower($input);
+		$input = rtrim($input, '.');
+
+		return $input;
+	}
+
+	/**
 	 * gpcSlash it
 	 * @param string $input
 	 * @return string
@@ -713,6 +725,21 @@ class ApiProducerBase {
 	protected function validateInput_digit($input) {
 		if(ctype_digit((string) $input)) {
 			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate input looks like a fully qualified domain name
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function validateInput_fqdn($input) {
+		if(strpos($input, '..') === false) {
+			if(preg_match('/^[a-z0-9][a-z0-9.-]+$/i', $input)) {
+				return true;
+			}
 		}
 
 		return false;
