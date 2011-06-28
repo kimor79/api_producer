@@ -412,6 +412,18 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Sanitize a mac address
+	 * @param string $input
+	 * @return string
+	 */
+	protected function sanitizeInput_mac_address($input) {
+		$input = $this->sanitizeInput_tolower($input);
+		$input = str_replace(array('.', ':'), '', $input);
+
+		return $input;
+	}
+
+	/**
 	 * Make a string lowercase
 	 * @param string $input
 	 * @return string
@@ -740,6 +752,30 @@ class ApiProducerBase {
 			if(preg_match('/^[a-z0-9][a-z0-9.-]+$/i', $input)) {
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate input is a mac address (several forms)
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function validateInput_mac_address($input) {
+		if(preg_match('/^([0-9a-z]{12}$/i', $input)) {
+			// c82a1403a7fb
+			return true;
+		}
+
+		if(preg_match('/^([0-9a-z]{2}:){5}[0-9a-z]{2}$/i', $input)) {
+			// c8:2a:14:03:a7:fb
+			return true;
+		}
+
+		if(preg_match('/^([0-9a-z]{4}\.){2}[0-9a-z]{4}$/i', $input)) {
+			// c82a.1403.a7fb
+			return true;
 		}
 
 		return false;
