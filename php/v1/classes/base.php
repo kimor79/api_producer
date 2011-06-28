@@ -763,7 +763,7 @@ class ApiProducerBase {
 	 * @return bool
 	 */
 	protected function validateInput_mac_address($input) {
-		if(preg_match('/^([0-9a-z]{12}$/i', $input)) {
+		if(preg_match('/^[0-9a-z]{12}$/i', $input)) {
 			// c82a1403a7fb
 			return true;
 		}
