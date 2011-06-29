@@ -391,6 +391,24 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Sanitize as bool (defaulting to false)
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function sanitizeInput_bool_false($input) {
+		return $this->trueFalse($input, false);
+	}
+
+	/**
+	 * Sanitize as bool (defaulting to true)
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function sanitizeInput_bool_true($input) {
+		return $this->trueFalse($input, true);
+	}
+
+	/**
 	 * Sanitize a fqdn
 	 * @param string $input
 	 * @return string
@@ -603,6 +621,14 @@ class ApiProducerBase {
 	 * @return bool
 	 */
 	public function trueFalse($input, $default) {
+		if($input === true) {
+			return true;
+		}
+
+		if($input === false) {
+			return false;
+		}
+
 		switch(strtolower((string) $input)) {
 			case '1':
 			case 'on':
@@ -714,6 +740,14 @@ class ApiProducerBase {
 	 * @return bool
 	 */
 	protected function validateInput_bool($input) {
+		if($input === true) {
+			return true;
+		}
+
+		if($input === false) {
+			return true;
+		}
+
 		switch(strtolower((string) $input)) {
 			case '0':
 			case '1':
