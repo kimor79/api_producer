@@ -79,7 +79,7 @@ class ApiProducerBase {
 	 * @return array
 	 */
 	public function buildQuery($input, $fields) {
-		$types = array('ge', 'gt', 'le', 'lt', 're');
+		$types = array('ge', 'gt', 'le', 'lt');
 		$output = array();
 
 		while(list($junk, $field) = each($fields)) {
@@ -89,12 +89,16 @@ class ApiProducerBase {
 				$output[$field]['eq'] = (array) $input[$field];
 			}
 
+			if(array_key_exists($field . '_re', $input)) {
+				$output[$field]['re'] =
+					(array) $input[$field . '_re'];
+			}
+
 			foreach($types as $type) {
 				$key = sprintf("%s_%s", $field, $type);
 
 				if(array_key_exists($key, $input)) {
-					$output[$field][$type] = 
-						(array) $input[$key];
+					$output[$field][$type] = $input[$key];
 				}
 			}
 
