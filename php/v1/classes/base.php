@@ -443,6 +443,21 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Sanitize a date (strtotime)
+	 * @param string $input
+	 * @return int
+	 */
+	protected function sanitizeInput_date($input) {
+		$date = strtotime($input);
+
+		if($date === -1 || $date === false) {
+			return 0;
+		}
+
+		return $date;
+	}
+
+	/**
 	 * Sanitize a fqdn
 	 * @param string $input
 	 * @return string
@@ -792,6 +807,21 @@ class ApiProducerBase {
 			case 'true':
 			case 'yes':
 				return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate input is a date (anything strtotime can convert)
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function validateInput_date($input) {
+		$date = strtotime($input);
+
+		if($date !== -1 && $date !== false) {
+			return true;
 		}
 
 		return false;
