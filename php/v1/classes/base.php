@@ -73,6 +73,40 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Build a query (array(key => array(eq => array() ...
+	 * @param array $input
+	 * @param array $fields
+	 * @return array
+	 */
+	public function buildQuery($input, $fields) {
+		$types = array('ge', 'gt', 'le', 'lt', 're');
+		$output = array();
+
+		while(list($junk, $field) = each($fields)) {
+			$output[$field] = array();
+
+			if(array_key_exists($field, $input)) {
+				$output[$field]['eq'] = (array) $input[$field];
+			}
+
+			foreach($types as $type) {
+				$key = sprintf("%s_%s", $field, $type);
+
+				if(array_key_exists($key, $input)) {
+					$output[$field][$type] = 
+						(array) $input[$key];
+				}
+			}
+
+			if(empty($output[$field])) {
+				unset($output[$field]);
+			}
+		}
+
+		return $output;
+	}
+
+	/**
 	 * Cast input
 	 * @param array $input
 	 * @param array $cast
