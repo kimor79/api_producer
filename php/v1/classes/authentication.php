@@ -38,6 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 class ApiProducerAuthentication {
 
+	protected $authenticated = false;
 	protected $message = '';
 	protected $status = 500;
 
@@ -53,15 +54,28 @@ class ApiProducerAuthentication {
 	 * @return bool
 	 */
 	public function authenticate() {
-		$this->message = '';
+		$this->message = 'Not authenticated';
+		$this->status = 400;
 
 		if(!empty($_SERVER['REMOTE_USER'])) {
+			$this->authenticated = true;
 			$this->message = 'Authenticated';
+			$this->status = 200;
 			return true;
 		}
 
-		$this->message = 'Not authenticated';
-		$this->status = 400;
+		return false;
+	}
+
+	/**
+	 * Check if authenticated
+	 * @return bool
+	 */
+	public function authenticated() {
+		if($this->authenticated) {
+			return true;
+		}
+
 		return false;
 	}
 
