@@ -39,6 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 class ApiProducerAuthentication {
 
 	protected $authenticated = false;
+	protected $checked = false;
 	protected $message = '';
 	protected $status = 500;
 
@@ -54,6 +55,7 @@ class ApiProducerAuthentication {
 	 * @return bool
 	 */
 	public function authenticate() {
+		$this->checked = true;
 		$this->message = 'Not authenticated';
 		$this->status = 400;
 
@@ -74,6 +76,10 @@ class ApiProducerAuthentication {
 	public function authenticated() {
 		if($this->authenticated) {
 			return true;
+		}
+
+		if(!$this->checked) {
+			return $this->authenticate();
 		}
 
 		return false;
