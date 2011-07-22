@@ -370,6 +370,30 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Remove values
+	 * @param arary $input
+	 * @param array $remove optional list of values (default is '')
+	 * @return array
+	 */
+	public function removeValues($input, $remove = array()) {
+		$output = array();
+
+		if(empty($remove)) {
+			$remove = array(
+				'',
+			);
+		}
+
+		while(list($key, $value) = each($input)) {
+			if(!in_array($value, $remove, true)) {
+				$output[$key] = $value;
+			}
+		}
+
+		return $output;
+	}
+
+	/**
 	 * Sanitize input
 	 * @param array $input
 	 * @param array $sanitize
