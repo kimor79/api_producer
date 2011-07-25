@@ -98,7 +98,13 @@ class ApiProducerBase {
 				$key = sprintf("%s_%s", $field, $type);
 
 				if(array_key_exists($key, $input)) {
-					$output[$field][$type] = $input[$key];
+					if(is_array($input[$key])) {
+						$output[$field][$type] =
+							$input[$key][0];
+					} else {
+						$output[$field][$type] =
+							$input[$key];
+					}
 				}
 			}
 
