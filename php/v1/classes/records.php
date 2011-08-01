@@ -59,6 +59,7 @@ class ApiProducerRecords extends ApiProducerBase {
 		$this->output_formats[] = 'csv';
 		$this->output_formats[] = 'list';
 
+		$this->variables['csv_fields'] = array();
 		$this->variables['flat_output']['csv'] = true;
 		$this->variables['list_key'] = '';
 	}
@@ -208,14 +209,33 @@ class ApiProducerRecords extends ApiProducerBase {
 		$fp = fopen('php://temp', 'r+');
 
 		if($this->getParameter('csvHeader')) {
-			$first = reset($data['records']);
+			if(!empty($this->variables['csv_fields'])) {
+				$first = $this->variables['csv_fields'];
+			} else {
+				$first = reset($data['records']);
+			}
+
 			if(is_array($first)) {
+				ksort($first);
 				fputcsv($fp, array_keys($first), ',', '"');
 			}
 		}
 
 		foreach($values as $value) {
-			fputcsv($fp, (array) $value, ',', '"');
+			if(is_array($value)) {
+				if(!empty($this->variables['csv_fields'])) {
+					$fields = array_intersect_key(
+						$value,
+						$this->variables['csv_fields']);
+
+					$value = array_merge(
+						$this->variables['csv_fields'],
+						$fields);
+				}
+
+				ksort($value);
+				fputcsv($fp, (array) $value, ',', '"');
+			}
 		}
 
 		rewind($fp);
