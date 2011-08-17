@@ -521,6 +521,12 @@ class ApiProducerBase {
 		$input = $this->sanitizeInput_tolower($input);
 		$input = str_replace(array('.', ':'), '', $input);
 
+		if(strlen($input) == 14) {
+			if(substr($input, 0, 2) === '0x') {
+				$input = substr($input, 2);
+			}
+		}
+
 		return $input;
 	}
 
@@ -895,7 +901,8 @@ class ApiProducerBase {
 	 * @return bool
 	 */
 	protected function validateInput_mac_address($input) {
-		if(preg_match('/^[0-9a-z]{12}$/i', $input)) {
+		if(preg_match('/^(?:0x)?[0-9a-z]{12}$/i', $input)) {
+			// 0xc82a1403a7fb - snmp output
 			// c82a1403a7fb
 			return true;
 		}
