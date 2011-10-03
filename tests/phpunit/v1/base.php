@@ -114,6 +114,12 @@ class TestApiProducerBase extends ApiProducerBase {
 			'contentType'), $args);
 	}
 
+	public function diffArray() {
+		$args = func_get_args();
+		return call_user_func_array(array('parent',
+			'diffArray'), $args);
+	}
+
 	public function getVariable() {
 		$args = func_get_args();
 		return call_user_func_array(array('parent', 'getVariable'),

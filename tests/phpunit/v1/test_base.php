@@ -167,6 +167,74 @@ class ApiProducerBaseTest extends PHPUnit_Framework_TestCase {
 		$this->markTestIncomplete();
 	}
 
+	public function testDiffArray() {
+		$old = array(
+			'a' => 'a',
+			'b' => 'b',
+			'c' => array(
+				'c1' => 'same',
+				'c2' => 'old',
+			),
+			'd' => array(
+				'd1' => 'same',
+				'd2' => array(1),
+			),
+			'e' => array(
+				'e1' => array(
+					'e2' => 'old',
+				),
+			),
+			'f' => array(
+				'f1' => array(
+					'f2' => 'same',
+				),
+			),
+			'nonew' => 'foobar',
+		);
+
+		$new = array(
+			'a' => 'A',
+			'b' => 'b',
+			'c' => array(
+				'c1' => 'same',
+				'c2' => 'new',
+			),
+			'd' => array(
+				'd1' => 'same',
+				'd2' => array(1),
+			),
+			'e' => array(
+				'e1' => array(
+					'e2' => 'new',
+				),
+			),
+			'f' => array(
+				'f1' => array(
+					'f2' => 'same',
+				),
+			),
+			'noold' => 'foobar',
+		);
+
+		$got = $this->api->diffArray($old, $new);
+print_r($got);
+
+		$this->assertSame('a', $got['a']['old']);
+		$this->assertSame('A', $got['a']['new']);
+
+		$this->assertArrayNotHasKey('b', $got);
+
+		$this->assertArrayHasKey('c', $got);
+
+		$this->assertArrayNotHasKey('d', $got);
+
+		$this->assertSame('foobar', $got['nonew']['old']);
+		$this->assertNull($got['nonew']['new']);
+
+		$this->assertNull($got['noold']['old']);
+		$this->assertSame('foobar', $got['noold']['new']);
+	}
+
 	public function testFullHandleInput() {
 		$input = array(
 			'a' => 'a',

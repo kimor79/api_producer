@@ -319,6 +319,60 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Recursively diff two arrays
+	 * @param array $old
+	 * @param array $new
+	 * @return array
+	 */
+	public function diffArray($old, $new) {
+		$diff = array();
+		$keys = array_merge(array_keys($old), array_keys($new));
+
+		while(list($junk, $key) = each($keys)) {
+			if(!array_key_exists($key, $old)) {
+				$diff[$key] = array(
+					'old' => NULL,
+					'new' => $new[$key],
+				);
+
+				continue;
+			}
+
+			if(!array_key_exists($key, $new)) {
+				$diff[$key] = array(
+					'old' => $old[$key],
+					'new' => NULL,
+				);
+
+				continue;
+			}
+
+			if($old[$key] !== $new[$key]) {
+				$diff[$key] = array(
+					'old' => $old[$key],
+					'new' => $new[$key],
+				);
+
+				continue;
+			}
+
+			if(is_array($old[$key])) {
+				$diff[$key] = $this->diffArray($old[$key],
+					$new[$key]);
+
+				if(empty($diff[$key])) {
+					unset($diff[$key]);
+				}
+
+				continue;
+			}
+		}
+		reset($keys);
+
+		return $diff;
+	}
+
+	/**
 	 * Get the value for given variable item
 	 * @param string $item
 	 * @return mixed
