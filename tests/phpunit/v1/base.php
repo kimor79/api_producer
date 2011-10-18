@@ -173,6 +173,12 @@ class TestApiProducerBase extends ApiProducerBase {
 			'sanitizeInput_date'), $args);
 	}
 
+	public function sanitizeInput_dollar() {
+		$args = func_get_args();
+		return call_user_func_array(array('parent',
+			'sanitizeInput_dollar'), $args);
+	}
+
 	public function sanitizeInput_fqdn() {
 		$args = func_get_args();
 		return call_user_func_array(array('parent',
@@ -290,6 +296,12 @@ class TestApiProducerBase extends ApiProducerBase {
 		$args = func_get_args();
 		return call_user_func_array(array('parent',
 			'validateInput_digit'), $args);
+	}
+
+	public function validateInput_dollar() {
+		$args = func_get_args();
+		return call_user_func_array(array('parent',
+			'validateInput_dollar'), $args);
 	}
 
 	public function validateInput_fqdn() {

@@ -546,6 +546,15 @@ class ApiProducerBase {
 	}
 
 	/**
+	 * Sanitize dollar
+	 * @param string $input
+	 * @return float
+	 */
+	protected function sanitizeInput_dollar($input) {
+		return sprintf("%01.2f", $input);
+	}
+
+	/**
 	 * Sanitize a fqdn
 	 * @param string $input
 	 * @return string
@@ -928,6 +937,23 @@ class ApiProducerBase {
 	 */
 	protected function validateInput_digit($input) {
 		if(ctype_digit((string) $input)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate input is a dollar amount
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function validateInput_dollar($input) {
+		if(ctype_digit((string) $input)) {
+			return true;
+		}
+
+		if(preg_match('/^\d+\.\d\d$/', $input)) {
 			return true;
 		}
 

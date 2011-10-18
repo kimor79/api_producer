@@ -407,6 +407,16 @@ print_r($got);
 		$this->markTestIncomplete();
 	}
 
+	public function testSanitizeInput_dollar() {
+		$got = $this->api->sanitizeInput_dollar('1000.00');
+		$this->assertSame('1000.00', $got);
+	}
+
+	public function testSanitizeInput_dollar1() {
+		$got = $this->api->sanitizeInput_dollar('1000');
+		$this->assertSame('1000.00', $got);
+	}
+
 	public function testSanitizeInput_fqdn() {
 		$this->markTestIncomplete();
 	}
@@ -484,6 +494,10 @@ print_r($got);
 	}
 
 	public function testValidateInput_digit() {
+		$this->markTestIncomplete();
+	}
+
+	public function testValidateInput_dollar() {
 		$this->markTestIncomplete();
 	}
 
