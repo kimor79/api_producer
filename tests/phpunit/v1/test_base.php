@@ -217,7 +217,6 @@ class ApiProducerBaseTest extends PHPUnit_Framework_TestCase {
 		);
 
 		$got = $this->api->diffArray($old, $new);
-print_r($got);
 
 		$this->assertSame('a', $got['a']['old']);
 		$this->assertSame('A', $got['a']['new']);
