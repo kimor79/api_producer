@@ -416,6 +416,16 @@ class ApiProducerBaseTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame('1000.00', $got);
 	}
 
+	public function testSanitizeInput_dollar2() {
+		$got = $this->api->sanitizeInput_dollar('1234.56');
+		$this->assertSame('1234.56', $got);
+	}
+
+	public function testSanitizeInput_dollar3() {
+		$got = $this->api->sanitizeInput_dollar('01234.56');
+		$this->assertSame('1234.56', $got);
+	}
+
 	public function testSanitizeInput_fqdn() {
 		$this->markTestIncomplete();
 	}
