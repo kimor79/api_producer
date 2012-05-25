@@ -154,11 +154,29 @@ class APIProducerV2Input extends APIProducerV2Validators {
 		$output = array_diff_key($input, $sanitize);
 
 		while(list($key, $function) = each($keys)) {
-			$function = 'sanitizeInput_' . $function;
-			if(method_exists($this, $function)) {
-				$output[$key] = $this->$function($input[$key]);
+			$multi = false;
+			$sanitized = array();
+			$values = (array) $input[$key];
+
+			if(substr($function, 0, 7) === '_array_') {
+				$function = substr($function, 7);
+				$multi = true;
+			}
+
+			while(list($junk, $value) = each($values)) {
+				$function = 'sanitizeInput_' . $function;
+				if(method_exists($this, $function)) {
+					$sanitized[] = $this->$function($value);
+				} else {
+					$sanitized[] = $value;
+				}
+			}
+			reset($values);
+
+			if($multi) {
+				$output[$key] = $sanitized;
 			} else {
-				$output[$key] = $input[$key];
+				$output[$key] = $sanitized[0];
 			}
 		}
 		reset($keys);
@@ -185,19 +203,13 @@ class APIProducerV2Input extends APIProducerV2Validators {
 				continue;
 			}
 
-			if(empty($function)) {
-				continue;
-			}
-
 			$keys[$key] = $function;
 		}
 		reset($required);
 
 		while(list($key, $function) = each($optional)) {
 			if(array_key_exists($key, $input)) {
-				if(!empty($function)) {
-					$keys[$key] = $function;
-				}
+				$keys[$key] = $function;
 			}
 		}
 		reset($optional);
@@ -211,15 +223,37 @@ class APIProducerV2Input extends APIProducerV2Validators {
 			reset($extra);
 		}
 
-		while(list($key, $func) = each($keys)) {
-			$function = 'validateInput_' . $func;
+		while(list($key, $function) = each($keys)) {
+			$multi = false;
+			$values = (array) $input[$key];
+
+			if(substr($function, 0, 7) === '_array_') {
+				$function = substr($function, 7);
+				$multi = true;
+			}
+
+			if(!is_scalar($input[$key])) {
+				if(!$multi) {
+					$errors[] = 'Multiple "' . $key .
+						'" not allowed';
+					continue;
+				}
+			}
+
+			if(empty($function)) {
+				continue;
+			}
+
+			$function = 'validateInput_' . $function;
 			if(!method_exists($this, $function)) {
 				$errors[] = 'Unable to validate ' . $key;
 				continue;
 			}
 
-			if(!$this->$function($input[$key])) {
-				$errors[] = 'Invalid ' . $key;
+			while(list($junk, $value) = each($values)) {
+				if(!$this->$function($value)) {
+					$errors[] = 'Invalid ' . $key;
+				}
 			}
 		}
 		reset($keys);
