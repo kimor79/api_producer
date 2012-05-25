@@ -116,6 +116,29 @@ class APIProducerV2Validators {
 	}
 
 	/**
+	 * Sanitize a timestamp (strtotime)
+	 * @param string $input
+	 * @return int
+	 */
+	protected function sanitizeInput_timestamp($input) {
+		if($this->validateInput_digit($input)) {
+			if(date('U', $input)) {
+				return $this->sanitizeInput_int($input);
+			}
+
+			return 0;
+		}
+
+		$date = strtotime($input);
+
+		if($date === -1 || $date === false) {
+			return 0;
+		}
+
+		return $date;
+	}
+
+	/**
 	 * Sanitize to lowercase
 	 * @param string $input
 	 * @param string
@@ -181,6 +204,27 @@ class APIProducerV2Validators {
 	 */
 	protected function validateInput_scalar($value) {
 		if(is_scalar($value)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate input is a timestamp (anything strtotime can convert)
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function validateInput_timestamp($input) {
+		if($this->validateInput_digit($input)) {
+			if(date('U', $input)) {
+				return true;
+			}
+		}
+
+		$date = strtotime($input);
+
+		if($date !== -1 && $date !== false) {
 			return true;
 		}
 
