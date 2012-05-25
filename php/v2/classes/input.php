@@ -157,6 +157,8 @@ class APIProducerV2Input extends APIProducerV2Validators {
 			$function = 'sanitizeInput_' . $function;
 			if(method_exists($this, $function)) {
 				$output[$key] = $this->$function($input[$key]);
+			} else {
+				$output[$key] = $input[$key];
 			}
 		}
 		reset($keys);
