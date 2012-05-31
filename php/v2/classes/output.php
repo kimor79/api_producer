@@ -48,6 +48,7 @@ class APIProducerV2Output extends APIProducerV2Validators {
 	protected $parameters = array(
 		'flatOutput' => false,
 		'outputFormat' => 'json',
+		'subDetails' => false,
 	);
 
 	public function __construct() {
@@ -166,6 +167,15 @@ class APIProducerV2Output extends APIProducerV2Validators {
 	}
 
 	/**
+	 * Sanitize subDetails
+	 * @param mixed $value
+	 * @return bool
+	 */
+	protected function sanitizeParameter_subDetails($value) {
+		return $this->sanitizeInput_bool_false($value);
+	}
+
+	/**
 	 * Set the parameters
 	 * @param array $parameters
 	 * @return array list of errors if any
@@ -217,6 +227,15 @@ class APIProducerV2Output extends APIProducerV2Validators {
 				return true;
 			}
 		}
+	}
+
+	/**
+	 * Validate subDetails
+	 * @param string $value
+	 * @return bool
+	 */
+	 protected function validateParameter_subDetails($value) {
+		return $this->validateInput_bool($value);
 	}
 }
 
