@@ -79,8 +79,11 @@ class APIProducerV2OutputRecords extends APIProducerV2Output {
 		);
 
 		if($this->getParameter('flatOutput')) {
-			$output['records'] =
-				$this->flattenData($output['records']);
+			while(list($key, $value) = each($output['records'])) {
+				$output['records'][$key] =
+					$this->flattenData($value);
+			}
+			reset($output['records']);
 		}
 
 		// if $misc['headers'] add headers
