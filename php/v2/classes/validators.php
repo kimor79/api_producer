@@ -107,6 +107,18 @@ class APIProducerV2Validators {
 	}
 
 	/**
+	 * Sanitize fqdn
+	 * @param mixed $input
+	 * @return string
+	 */
+	protected function sanitizeInput_fqdn($input) {
+		$input = strtolower($input);
+		$input = rtrim($input, '.');
+
+		return $input;
+	}
+
+	/**
 	 * Sanitize to integer
 	 * @param mixed $input
 	 * @return int
@@ -190,6 +202,21 @@ class APIProducerV2Validators {
 	protected function validateInput_digit($value) {
 		if(is_scalar($value)) {
 			if(preg_match('/^\d+$/', $value)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate input is a fqdn
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function validateInput_fqdn($value) {
+		if(strpos($value, '..') === false) {
+			if(preg_match('/^[a-z0-9][a-z0-9.-]+$/i', $value)) {
 				return true;
 			}
 		}

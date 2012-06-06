@@ -22,6 +22,11 @@ class TestAPIProducerV2Validators extends APIProducerV2Validators {
 			func_get_args());
 	}
 
+	public function sanitizeInput_fqdn() {
+		return call_user_func_array(array('parent', __FUNCTION__),
+			func_get_args());
+	}
+
 	public function sanitizeInput_int() {
 		return call_user_func_array(array('parent', __FUNCTION__),
 			func_get_args());
@@ -43,6 +48,11 @@ class TestAPIProducerV2Validators extends APIProducerV2Validators {
 	}
 
 	public function validateInput_digit() {
+		return call_user_func_array(array('parent', __FUNCTION__),
+			func_get_args());
+	}
+
+	public function validateInput_fqdn() {
 		return call_user_func_array(array('parent', __FUNCTION__),
 			func_get_args());
 	}

@@ -70,6 +70,26 @@ class APIProducerV2ValidatorsTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($got);
 	}
 
+	public function testSanitizeInput_fqdn() {
+		$got = $this->api->sanitizeInput_fqdn('foobar');
+		$this->assertSame('foobar', $got);
+	}
+
+	public function testSanitizeInput_fqdn1() {
+		$got = $this->api->sanitizeInput_fqdn('foobar1');
+		$this->assertSame('foobar1', $got);
+	}
+
+	public function testSanitizeInput_fqdn2() {
+		$got = $this->api->sanitizeInput_fqdn('192.168.6.1');
+		$this->assertSame('192.168.6.1', $got);
+	}
+
+	public function testSanitizeInput_fqdn3() {
+		$got = $this->api->sanitizeInput_fqdn('www.foobar.com.');
+		$this->assertSame('www.foobar.com', $got);
+	}
+
 /*
 	public function testSanitizeInput_dollar() {
 		$got = $this->api->sanitizeInput_dollar('1000.00');
@@ -112,6 +132,81 @@ class APIProducerV2ValidatorsTest extends PHPUnit_Framework_TestCase {
 	public function testSanitizeInput_timestamp3() {
 		$got = $this->api->sanitizeInput_timestamp('1337970727');
 		$this->assertSame(1337970727, $got);
+	}
+
+	public function testValidateInput_fqdn() {
+		$got = $this->api->validateInput_fqdn('1337970727');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_fqdn1() {
+		$got = $this->api->validateInput_fqdn('fe80::a00:27ff:fe03:29cd/64');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_fqdn2() {
+		$got = $this->api->validateInput_fqdn('192.168.6.1');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_fqdn3() {
+		$got = $this->api->validateInput_fqdn('192.168.6.1000');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_fqdn4() {
+		$got = $this->api->validateInput_fqdn('192.168.6.a');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_fqdn5() {
+		$got = $this->api->validateInput_fqdn('www.foobar.com');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_fqdn6() {
+		$got = $this->api->validateInput_fqdn('foobar');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_fqdn7() {
+		$got = $this->api->validateInput_fqdn('foobar.');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_fqdn8() {
+		$got = $this->api->validateInput_fqdn('fooBar.');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_fqdn9() {
+		$got = $this->api->validateInput_fqdn('.foobar.');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_fqdn10() {
+		$got = $this->api->validateInput_fqdn('foobar..');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_fqdn11() {
+		$got = $this->api->validateInput_fqdn('..foobar..');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_fqdn12() {
+		$got = $this->api->validateInput_fqdn('fe80::a00:27ff:fe03:29cd');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_fqdn13() {
+		$got = $this->api->validateInput_fqdn('foobar/a');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_fqdn14() {
+		$got = $this->api->validateInput_fqdn('foobar:a');
+		$this->assertFalse($got);
 	}
 }
 
