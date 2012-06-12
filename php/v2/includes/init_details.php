@@ -54,46 +54,40 @@ try {
 	exit(0);
 }
 
-$authn = $api['config']->getValue('authentication');
-if($authn) {
-	if(!array_key_exists('file', $authn)) {
-		$api['output']->sendData(500,
-			'No authentication file configured');
-		exit(0);
-	}
-
-	if(!array_key_exists('class', $authn)) {
-		$api['output']->sendData(500,
-			'No authentication class configured');
-		exit(0);
-	}
-
-	require_once($authn['file']);
-
-	$authn_class = $authn['class'];
-
-	$api['authn'] = new $authn_class($authn);
+$_authn = $api['config']->getValue('authentication');
+if(!is_array($_authn)) {
+	$_authn = array();
 }
 
-$authz = $api['config']->getValue('authorization');
-if($authz) {
-	if(!array_key_exists('file', $authz)) {
+if(!array_key_exists('file', $_authn)) {
+	$_authn['file'] = 'api_producer/v2/classes/authentication.php';
+}
+
+if(!array_key_exists('class', $_authn)) {
+	$_authn['class'] = 'APIProducerV2Authentication';
+}
+
+require_once($_authn['file']);
+$_authn_class = $_authn['class'];
+$api['authn'] = new $_authn_class($_authn);
+
+$_authz = $api['config']->getValue('authorization');
+if($_authz) {
+	if(!array_key_exists('file', $_authz)) {
 		$api['output']->sendData(500,
 			'No authorization file configured');
 		exit(0);
 	}
 
-	if(!array_key_exists('class', $authz)) {
+	if(!array_key_exists('class', $_authz)) {
 		$api['output']->sendData(500,
 			'No authorization class configured');
 		exit(0);
 	}
 
-	require_once($authz['file']);
-
-	$authn_class = $authz['class'];
-
-	$api['authz'] = new $authz_class($authz);
+	require_once($_authz['file']);
+	$_authz_class = $_authz['class'];
+	$api['authz'] = new $_authz_class($_authz);
 }
 
 while(list($key, $type) = each($drivers_needed)) {
