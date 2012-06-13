@@ -250,6 +250,21 @@ class APIProducerV2Driver extends APIProducerV2Validators {
 	}
 
 	/**
+	 * Validate sortField
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function validateParameter_sortField($value) {
+		if($this->validateInput_scalar($value)) {
+			if(preg_match('/^[a-z0-9:._-]+$/', $value)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Validate startIndex
 	 * @param mixed $value
 	 * @return bool
