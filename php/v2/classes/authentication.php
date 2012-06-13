@@ -38,10 +38,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 class APIProducerV2Authentication {
 
-	protected $config = array();
+	protected $config = array(
+		'webserver_auth' => false,
+	);
 
 	public function __construct($config = array()) {
-		$this->config = $config;
+		$this->config = array_merge($this->config, $config);
 	}
 
 	public function __deconstruct() {
