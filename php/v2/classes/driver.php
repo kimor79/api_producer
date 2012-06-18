@@ -73,7 +73,13 @@ class APIProducerV2Driver extends APIProducerV2Validators {
 			$output[$field] = array();
 
 			if(array_key_exists($field, $input)) {
-				$output[$field]['eq'] = array($input[$field]);
+				if(is_array($input[$field])) {
+					$output[$field]['eq'] = $input[$field];
+				} else {
+					$output[$field]['eq'] = array(
+						$input[$field],
+					);
+				}
 			}
 
 			if(array_key_exists($field . '_re', $input)) {
