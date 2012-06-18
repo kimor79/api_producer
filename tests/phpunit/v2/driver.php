@@ -12,6 +12,11 @@ class TestAPIProducerV2Driver extends APIProducerV2Driver {
 		parent::__deconstruct();
 	}
 
+	public function buildQuery() {
+		return call_user_func_array(array('parent', __FUNCTION__),
+			func_get_args());
+	}
+
 	public function validateParameter_sortField() {
 		return call_user_func_array(array('parent', __FUNCTION__),
 			func_get_args());

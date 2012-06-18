@@ -10,6 +10,32 @@ class APIProducerV2DriverTest extends PHPUnit_Framework_TestCase {
 		$this->api = new TestAPIProducerV2Driver();
 	}
 
+	public function testBuildQuery() {
+		$data = array(
+			'a' => '1',
+			'b' => '3',
+			'b_re' => 'foobar',
+			'c_le' => 5,
+		);
+		$expected = array(
+			'a' => array(
+				'eq' => array('1'),
+			),
+			'b' => array(
+				'eq' => array('3'),
+				're' => array('foobar'),
+			),
+			'c' => array(
+				'le' => 5,
+			),
+		);
+		$fields = array('a', 'b', 'c', 'd');
+
+
+		$got = $this->api->buildQuery($data, $fields);
+		$this->assertEquals($expected, $got);
+	}
+
 	public function testvalidateParameter_sortField() {
 		$got = $this->api->validateParameter_sortField('foobar');
 		$this->assertTrue($got);
