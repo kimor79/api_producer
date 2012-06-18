@@ -255,9 +255,19 @@ class APIProducerV2Driver extends APIProducerV2Validators {
 	 * @return bool
 	 */
 	protected function validateParameter_sortField($value) {
+		if(is_null($value)) {
+			return true;
+		}
+
+		if($value === '') {
+			return true;
+		}
+
 		if($this->validateInput_scalar($value)) {
-			if(preg_match('/^[a-z0-9:._-]+$/', $value)) {
-				return true;
+			if(is_string($value)) {
+				if(preg_match('/^[A-Za-z0-9:._-]+$/', $value)) {
+					return true;
+				}
 			}
 		}
 
