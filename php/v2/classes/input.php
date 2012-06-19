@@ -156,7 +156,12 @@ class APIProducerV2Input extends APIProducerV2Validators {
 		while(list($key, $function) = each($keys)) {
 			$multi = false;
 			$sanitized = array();
-			$values = (array) $input[$key];
+
+			if(is_array($input[$key])) {
+				$values = $input[$key];
+			} else {
+				$values = array($input[$key]);
+			}
 
 			if(substr($function, 0, 7) === '_array_') {
 				$function = substr($function, 7);
