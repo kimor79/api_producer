@@ -66,6 +66,11 @@ class TestAPIProducerV2Validators extends APIProducerV2Validators {
 		return call_user_func_array(array('parent', __FUNCTION__),
 			func_get_args());
 	}
+
+	public function validateInput_url() {
+		return call_user_func_array(array('parent', __FUNCTION__),
+			func_get_args());
+	}
 }
 
 ?>

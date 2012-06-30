@@ -208,6 +208,31 @@ class APIProducerV2ValidatorsTest extends PHPUnit_Framework_TestCase {
 		$got = $this->api->validateInput_fqdn('foobar:a');
 		$this->assertFalse($got);
 	}
+
+	public function testValidateInput_url() {
+		$got = $this->api->validateInput_url('');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_url1() {
+		$got = $this->api->validateInput_url('http:///foobar');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_url2() {
+		$got = $this->api->validateInput_url('http://foobar');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_url3() {
+		$got = $this->api->validateInput_url('http://foo/bar');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_url4() {
+		$got = $this->api->validateInput_url('http://foo/ bar');
+		$this->assertFalse($got);
+	}
 }
 
 ?>

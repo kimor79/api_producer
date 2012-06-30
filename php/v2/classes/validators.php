@@ -257,6 +257,19 @@ class APIProducerV2Validators {
 
 		return false;
 	}
+
+	/**
+	 * Validate input is a url (according to filter_var)
+	 * @param string $input
+	 * @return bool
+	 */
+	protected function validateInput_url($input) {
+		if(filter_var($input, FILTER_VALIDATE_URL) !== false) {
+			return true;
+		}
+
+		return false;
+	}
 }
 
 ?>
