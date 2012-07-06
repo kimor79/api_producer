@@ -48,7 +48,7 @@ class APIProducerV2Output extends APIProducerV2Validators {
 	protected $parameters = array(
 		'flatOutput' => false,
 		'outputFormat' => 'json',
-		'restfulOutput' => false,
+		'statusHeader' => false,
 		'subDetails' => false,
 	);
 
@@ -168,11 +168,11 @@ class APIProducerV2Output extends APIProducerV2Validators {
 	}
 
 	/**
-	 * Sanitize restfulOutput
+	 * Sanitize statusHeader
 	 * @param mixed $value
 	 * @return bool
 	 */
-	protected function sanitizeParameter_restfulOutput($value) {
+	protected function sanitizeParameter_statusHeader($value) {
 		return $this->sanitizeInput_bool_false($value);
 	}
 
@@ -240,10 +240,10 @@ class APIProducerV2Output extends APIProducerV2Validators {
 	}
 
 	/**
-	 * Validate restfulOutput
+	 * Validate statusHeader
 	 * @param string $value
 	 * @return bool
-	 protected function validateParameter_restfulOutput($value) {
+	 protected function validateParameter_statusHeader($value) {
 		return $this->validateInput_bool($value);
 	}
 
