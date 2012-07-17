@@ -1,7 +1,12 @@
 <?php
 
 $api = array();
+$consumers = array();
 $drivers = array();
+
+if(!isset($consumers_needed)) {
+	$consumers_needed = array();
+}
 
 if(!isset($drivers_needed)) {
 	$drivers_needed = array();
@@ -88,6 +93,35 @@ if($_authz) {
 	require_once($_authz['file']);
 	$_authz_class = $_authz['class'];
 	$api['authz'] = new $_authz_class($_authz);
+}
+
+foreach ($consumers_needed as $key) {
+	$consumer = 'consumer-' . $key;
+
+	$c_consumer = $api['config']->getValue($consumer);
+
+	if(!is_array($c_consumer)) {
+		$c_consumer = array();
+	}
+
+	if(!array_key_exists('file', $c_consumer)) {
+		$c_consumer['file'] = 'api_consumer/v2/classes/consumer.php';
+	}
+
+	if(!array_key_exists('class', $c_consumer)) {
+		$c_consumer['class'] = 'APIConsumerV2';
+	}
+
+	require_once($c_consumer['file']);
+
+	try {
+		$consumer_class = $c_consumer['class'];
+
+		$consumers[$key] = new $consumer_class($c_consumer);
+	} catch (Exception $e) {
+		$api['output']->sendData(500, $e->getMessage());
+		exit(0);
+	}
 }
 
 while(list($key, $type) = each($drivers_needed)) {
