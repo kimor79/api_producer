@@ -128,6 +128,22 @@ class APIProducerV2Validators {
 	}
 
 	/**
+	 * Alias of sanitizeInput_regexp
+	 */
+	protected function sanitizeInput_regex($input) {
+		return $this->sanitizeInput_regexp($input);
+	}
+
+	/**
+	 * Sanitize a regex
+	 * @param string $input
+	 * @return string
+	 */
+	protected function sanitizeInput_regexp($input) {
+		return $input;
+	}
+
+	/**
 	 * Sanitize a timestamp (strtotime)
 	 * @param string $input
 	 * @return int
@@ -219,6 +235,26 @@ class APIProducerV2Validators {
 			if(preg_match('/^[a-z0-9][a-z0-9.-]+$/i', $value)) {
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Alias of validateInput_regexp
+	 */
+	protected function validateInput_regex($value) {
+		return $this->validateInput_regexp($value);
+	}
+
+	/**
+	 * Validate input is a valid regex
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function validateInput_regexp($value) {
+		if(@preg_match($value, 'foo') !== false) {
+			return true;
 		}
 
 		return false;

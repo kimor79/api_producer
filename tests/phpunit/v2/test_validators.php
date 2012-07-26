@@ -209,6 +209,81 @@ class APIProducerV2ValidatorsTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($got);
 	}
 
+	public function testValidateInput_regexp() {
+		$got = $this->api->validateInput_regexp('foo');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp1() {
+		$got = $this->api->validateInput_regexp('/foo/');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_regexp2() {
+		$got = $this->api->validateInput_regexp('/foo/i');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_regexp3() {
+		$got = $this->api->validateInput_regexp('/foo/abcdefg');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp4() {
+		$got = $this->api->validateInput_regexp('');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp5() {
+		$got = $this->api->validateInput_regexp(true);
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp6() {
+		$got = $this->api->validateInput_regexp(false);
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp7() {
+		$got = $this->api->validateInput_regexp(NULL);
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp8() {
+		$got = $this->api->validateInput_regexp('/');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp9() {
+		$got = $this->api->validateInput_regexp('/foo');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp10() {
+		$got = $this->api->validateInput_regexp('foo/');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp11() {
+		$got = $this->api->validateInput_regexp('//foo/');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp12() {
+		$got = $this->api->validateInput_regexp('/foo//');
+		$this->assertFalse($got);
+	}
+
+	public function testValidateInput_regexp13() {
+		$got = $this->api->validateInput_regexp('#foo#');
+		$this->assertTrue($got);
+	}
+
+	public function testValidateInput_regexp14() {
+		$got = $this->api->validateInput_regexp('#/foo#');
+		$this->assertTrue($got);
+	}
+
 	public function testValidateInput_url() {
 		$got = $this->api->validateInput_url('');
 		$this->assertFalse($got);
