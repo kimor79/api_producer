@@ -45,15 +45,39 @@ class APIProducerV2OutputRecords extends APIProducerV2Output {
 
 		$this->parameters = array_merge($this->parameters, array(
 			'flatOutput' => false,
+			'listKey' => NULL,
 			'numResults' => 0,
 			'sortDir' => 'asc',
 			'sortField' => NULL,
 			'startIndex' => NULL,
 		));
+
+		$this->output_formats[] = 'list';
 	}
 
 	public function __deconstruct() {
 		parent::__deconstruct();
+	}
+
+	/**
+	 * Format output as a list (requires listKey to be set)
+	 * @param array $data
+	 * @return string
+	 */
+	protected function formatData_list($data) {
+		$key = $this->getParameter('listKey');
+		$output = array();
+
+		while(list($junk, $record) = each($data['records'])) {
+			if(is_array($record)) {
+				$output[] = $record[$key];
+			} else {
+				$output[] = $record;
+			}
+		}
+		reset($data['records']);
+
+		return implode("\n", $output);
 	}
 
 	/**
@@ -93,6 +117,23 @@ class APIProducerV2OutputRecords extends APIProducerV2Output {
 		if(method_exists($this, $function)) {
 			echo $this->$function($output);
 		}
+	}
+
+	/**
+	 * Validate listKey
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function validateParameter_listKey($value) {
+		if(is_null($value)) {
+			return true;
+		}
+
+		if($this->validateInput_scalar($value)) {
+			return true;
+		}
+
+		return false;
 	}
 }
 
