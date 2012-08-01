@@ -48,39 +48,70 @@ class APIProducerV2Input extends APIProducerV2Validators {
 
 	/**
 	 * Get the parameters/input from the input (GET, POST, JSON, etc)
-	 * @param string $where Where to get input from (GPJ)
+	 * @param array $where Where to get input from ('input' => GPJ)
 	 * @return mixed array(input, parameters) or false
 	 */
-	public function getInput($where = 'GPJ') {
+	public function getInput($where = array()) {
 		$input = array();
+		$i_request = array();
 		$params = array();
-		$request = array();
+		$p_request = array();
 
-		if(stripos($where, 'G') !== false) {
-			$request = array_merge($request, $_GET);
+		if(!array_key_exists('input', $where)) {
+			$where['input'] = 'GPJ';
 		}
 
-		if(stripos($where, 'P') !== false) {
-			$request = array_merge($request, $_POST);
+		if(!array_key_exists('params', $where)) {
+			$where['params'] = 'GPJ';
 		}
 
-		if(stripos($where, 'J') !== false) {
+		if(stripos($where['input'], 'G') !== false) {
+			$i_request = array_merge($i_request, $_GET);
+		}
+
+		if(stripos($where['input'], 'P') !== false) {
+			$i_request = array_merge($i_request, $_POST);
+		}
+
+		if(stripos($where['input'], 'J') !== false) {
 			$s_json = file_get_contents('php://input');
 			$json = json_decode($s_json, true);
 
 			if($json) {
-				$request = array_merge($request, $json);
+				$i_request = array_merge($i_request, $json);
 			}
 		}
 
-		while(list($key, $value) = each($request)) {
-			if(preg_match('/[a-z][A-Z]/', $key)) {
-				$params[$key] = $value;
-			} else {
+		while(list($key, $value) = each($i_request)) {
+			if(!preg_match('/[a-z][A-Z]/', $key)) {
 				$input[$key] = $value;
 			}
 		}
-		reset($params);
+		reset($i_request);
+
+		if(stripos($where['params'], 'G') !== false) {
+			$p_request = array_merge($p_request, $_GET);
+		}
+
+		if(stripos($where['params'], 'P') !== false) {
+			$p_request = array_merge($p_request, $_POST);
+		}
+
+		if(stripos($where['params'], 'J') !== false) {
+			$s_json = file_get_contents('php://input');
+			$json = json_decode($s_json, true);
+
+			if($json) {
+				$p_request = array_merge($p_request, $json);
+			}
+		}
+
+		while(list($key, $value) = each($p_request)) {
+			if(preg_match('/[a-z][A-Z]/', $key)) {
+				$params[$key] = $value;
+			}
+		}
+		reset($p_request);
 
 		return array($input, $params);
 	}
