@@ -54,8 +54,11 @@ class APIProducerV2Input extends APIProducerV2Validators {
 	public function getInput($where = array()) {
 		$input = array();
 		$i_request = array();
+		$json = false;
 		$params = array();
 		$p_request = array();
+		$post = false;
+		$s_json = '';
 
 		if(!array_key_exists('input', $where)) {
 			$where['input'] = 'GPJ';
@@ -65,20 +68,25 @@ class APIProducerV2Input extends APIProducerV2Validators {
 			$where['params'] = 'GPJ';
 		}
 
+		$s_json = file_get_contents('php://input');
+		$json = json_decode($s_json, true);
+		if(!$json) {
+			$post = true;
+		}
+
 		if(stripos($where['input'], 'G') !== false) {
 			$i_request = array_merge($i_request, $_GET);
 		}
 
-		if(stripos($where['input'], 'P') !== false) {
-			$i_request = array_merge($i_request, $_POST);
-		}
-
 		if(stripos($where['input'], 'J') !== false) {
-			$s_json = file_get_contents('php://input');
-			$json = json_decode($s_json, true);
-
 			if($json) {
 				$i_request = array_merge($i_request, $json);
+			}
+		}
+
+		if(stripos($where['input'], 'P') !== false) {
+			if($post) {	
+				$i_request = array_merge($i_request, $_POST);
 			}
 		}
 
@@ -93,16 +101,15 @@ class APIProducerV2Input extends APIProducerV2Validators {
 			$p_request = array_merge($p_request, $_GET);
 		}
 
-		if(stripos($where['params'], 'P') !== false) {
-			$p_request = array_merge($p_request, $_POST);
-		}
-
 		if(stripos($where['params'], 'J') !== false) {
-			$s_json = file_get_contents('php://input');
-			$json = json_decode($s_json, true);
-
 			if($json) {
 				$p_request = array_merge($p_request, $json);
+			}
+		}
+
+		if(stripos($where['params'], 'P') !== false) {
+			if($post) {
+				$p_request = array_merge($p_request, $_POST);
 			}
 		}
 
