@@ -177,13 +177,13 @@ class APIProducerV2Driver extends APIProducerV2Validators {
 	 * @return string
 	 */
 	protected function sanitizeParameter_sortDir($value) {
-		$substr = strtolower(substr($value, 0, 4));
+		$substr = strtolower(substr($value, 0, 3));
 
-		if($substr === 'desc') {
+		if($substr === 'des') {
 			return 'desc';
 		}
 
-		return $this->parameters['sortDir'];
+		return 'asc';
 	}
 
 	/**
