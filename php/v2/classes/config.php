@@ -79,6 +79,46 @@ class APIProducerV2Config {
 
 		return NULL;
 	}
+
+	/**
+	 * Determines whether a feature is enabled.
+	 * e.g., `foo_enable = yes` or `foo_enabled = yes`
+	 * These values (case-insensitive) will enable the feature:
+	 *  true (bool, string), 1 (int, string), enable[d], on, yes
+	 * @param string $feature The feature to look up
+	 * @return bool
+	 */
+	public function isEnabled($feature) {
+		$value = $this->getValue($feature . '_enable');
+
+		if(is_null($value)) {
+			$value = $this->getValue($feature . '_enabled');
+		}
+
+		if(!is_null($value)) {
+			if($value === 1) {
+				return true;
+			}
+
+			if($value === true) {
+				return true;
+			}
+
+			if(is_string($value)) {
+				switch(strtolower($value)) {
+					case '1':
+					case 'enable':
+					case 'enabled':
+					case 'on':
+					case 'true':
+					case 'yes':
+						return true;
+				}
+			}
+		}
+
+		return false;
+	}
 }
 
 ?>
