@@ -17,6 +17,12 @@ class TestAPIProducerV2Config extends APIProducerV2Config {
 		return call_user_func_array(array('parent', 'getValue'),
 			$args);
 	}
+
+	public function isEnabled() {
+		$args = func_get_args();
+		return call_user_func_array(array('parent', 'isEnabled'),
+			$args);
+	}
 }
 
 ?>
