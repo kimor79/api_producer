@@ -70,14 +70,15 @@ class APIProducerV2Config {
 	/**
 	 * Get the value of a config item
 	 * @param string $key The key to look up
+	 * @param string $default Optional default value
 	 * @return mixed The value or NULL
 	 */
-	public function getValue($key) {
+	public function getValue($key, $default = NULL) {
 		if(array_key_exists($key, $this->config)) {
 			return $this->config[$key];
 		}
 
-		return NULL;
+		return $default;
 	}
 
 	/**
