@@ -2,7 +2,7 @@
 
 /*
 
-Copyright (c) 2012, Kimo Rosenbaum and contributors
+Copyright (c) 2012-2013, Kimo Rosenbaum and contributors
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -144,6 +144,15 @@ class APIProducerV2Validators {
 	}
 
 	/**
+	 * Sanitize a sha256 as hex
+	 * @param string $input
+	 * @return string
+	 */
+	protected function sanitizeInput_sha256_hex($input) {
+		return $this->sanitizeInput_tolower($input);
+	}
+
+	/**
 	 * Sanitize a timestamp (strtotime)
 	 * @param string $input
 	 * @return int
@@ -268,6 +277,21 @@ class APIProducerV2Validators {
 	protected function validateInput_scalar($value) {
 		if(is_scalar($value)) {
 			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate input looks like a sha256 hex hash
+	 * @param string $value
+	 * @return bool
+	 */
+	protected function validateInput_sha256_hex($value) {
+		if(length($value) === 64) {
+			if(preg_match('/^[A-Fa-f0-9]{64}$/', $value)) {
+				return true;
+			}
 		}
 
 		return false;
