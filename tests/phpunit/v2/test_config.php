@@ -49,6 +49,36 @@ class APIProducerV2ConfigTest extends PHPUnit_Framework_TestCase {
 		$expect = array('bar' => 'foo');
 		$this->assertEquals($expect, $got);
 	}
+
+	public function testIsEnabled() {
+		$got = $this->api->isEnabled('foo');
+		$this->assertTrue($got);
+	}
+
+	public function testIsEnabled1() {
+		$got = $this->api->isEnabled('bar');
+		$this->assertFalse($got);
+	}
+
+	public function testIsEnabled2() {
+		$got = $this->api->isEnabled('sub1');
+		$this->assertFalse($got);
+	}
+
+	public function testIsEnabled3() {
+		$got = $this->api->isEnabled('sub2');
+		$this->assertTrue($got);
+	}
+
+	public function testIsEnabled4() {
+		$got = $this->api->isEnabled('sub3');
+		$this->assertTrue($got);
+	}
+
+	public function testIsEnabled5() {
+		$got = $this->api->isEnabled('sub4');
+		$this->assertFalse($got);
+	}
 }
 
 ?>

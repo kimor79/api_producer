@@ -55,16 +55,27 @@ class APIProducerV2Config {
 	/**
 	 * Determines whether a feature is enabled.
 	 * e.g., `foo_enable = yes` or `foo_enabled = yes`
+	 * or within a sub-section, `enable = yes` or `enabled = yes`
 	 * These values (case-insensitive) will enable the feature:
 	 *  true (bool, string), 1 (int, string), enable[d], on, yes
 	 * @param string $feature The feature to look up
 	 * @return bool
 	 */
 	public function isEnabled($feature) {
-		$value = $this->getValue($feature . '_enable');
+		$section = $this->getValue($feature);
 
-		if(is_null($value)) {
-			$value = $this->getValue($feature . '_enabled');
+		if(is_array($section)) {
+			if(array_key_exists('enable', $section)) {
+				$value = $section['enable'];
+			} elseif(array_key_exists('enabled', $section)) {
+				$value = $section['enabled'];
+			}
+		} else {
+			$value = $this->getValue($feature . '_enable');
+
+			if(is_null($value)) {
+				$value = $this->getValue($feature . '_enabled');
+			}
 		}
 
 		if(!is_null($value)) {
