@@ -43,6 +43,12 @@ class APIProducerV2ConfigTest extends PHPUnit_Framework_TestCase {
 		$got = $this->api->getValue('exists', 'no');
 		$this->assertSame('yes', $got);
 	}
+
+	public function testGetValue6() {
+		$got = $this->api->getValue('sub1');
+		$expect = array('bar' => 'foo');
+		$this->assertEquals($expect, $got);
+	}
 }
 
 ?>
