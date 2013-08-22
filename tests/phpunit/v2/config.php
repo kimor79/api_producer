@@ -1,6 +1,6 @@
 <?php
 
-require_once 'api_producer/v2/classes/config.php' ;
+require_once __DIR__ . '/../../../php/v2/classes/config.php';
 
 class TestAPIProducerV2Config extends APIProducerV2Config {
 
